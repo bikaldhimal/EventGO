@@ -8,7 +8,10 @@ import { GiEngagementRing } from "react-icons/gi";
 const Support = () => {
   return (
     <>
-      <div className="w-full min-h-screen bg-[#F8F6FD] font-montserrat scroll-smooth">
+      <div
+        id="support"
+        className="w-full min-h-screen bg-[#F8F6FD] font-montserrat scroll-smooth"
+      >
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-5 lg:gap-16 xl:gap-16 2xl:gap-20 px-4 sm:px-12 md:px-16 lg:px-20 xl:px-24 2xl:px-24 py-3 pb-16 mx-auto">
           {/* left */}
           <div className="flex flex-col justify-between py-10 gap-10 font-serif lg:items-start lg:min-w-[28rem]">

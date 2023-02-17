@@ -34,6 +34,9 @@ app.use("/api/user", userRoutes);
 const adminRoutes = require("./routes/adminRoute");
 app.use("/api/admin", adminRoutes);
 
+// const eventRoute = require("./routes/eventRoute");
+// app.use("/api/events", eventRoute);
+
 // File Upload (Image Upload)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

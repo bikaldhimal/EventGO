@@ -23,9 +23,9 @@ function verifyToken(req, res, next) {
   }
 }
 
-router.get("/events", verifyToken, eventController.getAllEvents);
-router.post("/events/add", verifyToken, eventController.addEvent);
-router.post("/events/update/:id", verifyToken, eventController.updateEvent);
-router.post("/events/delete/:id", verifyToken, eventController.deleteEvent);
+router.get("/show", verifyToken, eventController.getAllEvents);
+router.post("/add", verifyToken, eventController.addEvent);
+router.post("/update/:id", verifyToken, eventController.updateEvent);
+router.post("/delete/:id", verifyToken, eventController.deleteEvent);
 
 module.exports = router;

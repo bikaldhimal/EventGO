@@ -1,7 +1,6 @@
 import React from "react";
-import { BsFillPencilFill } from "react-icons/bs";
 
-const Profile = () => {
+const ManagerProfile = () => {
   return (
     <>
       <div className="w-full flex flex-col sm:flex-col lg:flex-row xl:flex-row 2xl:flex-row 3xl:flex-row gap-10">
@@ -16,7 +15,7 @@ const Profile = () => {
 
           <div className="flex flex-col justify-center gap-2 mt-2 items-center text-center">
             <h1 className="text-xl font-semibold text-gray-900 mb-2">
-              Nepathya
+              Kate Winslet
             </h1>
             <p className="text-sm text-gray-500 text-center font-light">
               Drawing inspiration from a range of musical genres, including pop,
@@ -123,4 +122,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ManagerProfile;

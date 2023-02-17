@@ -9,7 +9,7 @@ import { RiHotelFill } from "react-icons/ri";
 const Home = () => {
   return (
     <>
-      <div className="w-full min-h-screen bg-gradient-to-br from-tl_rgba_home via-m_rgba_home to-bl_rgba_home font-montserrat scroll-smooth">
+      <div className="w-full min-h-screen bg-slate-200 font-montserrat scroll-smooth">
         <div className="flex flex-col gap-5 lg:gap-16 xl:gap-16 2xl:gap-20 px-4 sm:px-12 md:px-16 lg:px-20 xl:px-24 2xl:px-24 py-3 mx-auto justify-between">
           {/* top */}
           <div className="flex flex-col lg:flex-row justify-between py-10 gap-16">
@@ -29,7 +29,7 @@ const Home = () => {
 
               <Link
                 to="/signup"
-                className="justify-center items-center select-none px-5 2xl:px-6 py-3 2xl:py-4 font-serif 2xl:font-bold tracking-widest rounded-xl text-white text-xs font-medium bg-gradient-to-r from-tl_signup via-indigo-600 to-bl_signup hover:cursor-pointer"
+                className="justify-center items-center select-none px-5 2xl:px-6 py-3 2xl:py-4 font-serif 2xl:font-bold tracking-widest rounded-xl text-white text-xs font-medium bg-gradient-to-r from-tl_signup via-indigo-600 to-bl_signup hover:cursor-pointer shadow-md hover:shadow-lg"
               >
                 Get Started
               </Link>
@@ -56,7 +56,7 @@ const Home = () => {
 
             <div className="flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-28 2xl:gap-36">
               {/* Set 1 */}
-              <div className="flex flex-col xl:flex-row justify-center items-center gap-2 2xl:gap-5 lg:gap-4 text-gray-600 sm:text-xl md:text-2xl 2xl:text-3xl">
+              <div className="flex flex-col xl:flex-row justify-center items-center gap-2 2xl:gap-5 lg:gap-4 text-gray-600 hover:text-gray-700 sm:text-xl md:text-2xl 2xl:text-3xl font-medium">
                 {/* Icon */}
                 <SiEventbrite />
                 {/* Title */}
@@ -64,7 +64,7 @@ const Home = () => {
               </div>
               {/* Set 1 end */}
               {/* Set 2 */}
-              <div className="flex flex-col xl:flex-row justify-center items-center gap-2 2xl:gap-5 lg:gap-4 text-gray-600 sm:text-xl md:text-2xl 2xl:text-3xl">
+              <div className="flex flex-col xl:flex-row justify-center items-center gap-2 2xl:gap-5 lg:gap-4 text-gray-600 hover:text-gray-700 sm:text-xl md:text-2xl 2xl:text-3xl font-medium">
                 {/* Icon */}
                 <SiMusicbrainz />
                 {/* Title */}
@@ -72,15 +72,15 @@ const Home = () => {
               </div>
               {/* Set 2 end */}
               {/* Set 3 */}
-              <div className="flex flex-col xl:flex-row justify-center items-center gap-2 2xl:gap-5 lg:gap-4 text-gray-600 sm:text-xl md:text-2xl 2xl:text-3xl">
+              <div className="flex flex-col xl:flex-row justify-center items-center gap-2 2xl:gap-5 lg:gap-4 text-gray-600 hover:text-gray-700 sm:text-xl md:text-2xl 2xl:text-3xl font-medium">
                 {/* Icon */}
                 <FaOldRepublic />
                 {/* Title */}
-                <p className="">General Public</p>
+                <p>General Public</p>
               </div>
               {/* Set 3 end */}
               {/* Set 4 */}
-              <div className="flex flex-col xl:flex-row justify-center items-center gap-2 2xl:gap-5 lg:gap-4 text-gray-600 sm:text-xl md:text-2xl 2xl:text-3xl">
+              <div className="flex flex-col xl:flex-row justify-center items-center gap-2 2xl:gap-5 lg:gap-4 text-gray-600 hover:text-gray-700 sm:text-xl md:text-2xl 2xl:text-3xl font-medium">
                 {/* Icon */}
                 <RiHotelFill />
                 {/* Title */}

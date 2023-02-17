@@ -108,7 +108,7 @@ const Contact = () => {
                 ></textarea>
               </div>
               {/* input fields end */}
-              <button className="flex justify-center items-center text-center px-4 py-2 md:font-medium lg:text-lg bg-green hover:bg-orange-500 text-white rounded-md delay-[10ms] shadow-sm shadow-green/25">
+              <button className="flex justify-center items-center text-center px-4 py-2 md:font-medium lg:text-lg bg-green hover:bg-orange-500 text-white rounded-md delay-[10ms] shadow-sm shadow-green/25 duration-300">
                 Request
               </button>
             </form>
@@ -195,11 +195,10 @@ const Contact = () => {
           {/* footer */}
 
           <div className="flex flex-col md:flex-row justify-center items-center md:justify-center md:items-center lg:justify-start lg:items-center lg:w-full 2xl:text-xs gap-2 md:gap-5 text-white text-[0.6rem] mt-5 lg:mt-0 sm:tracking-wider xl:tracking-widest">
-            <p className="flex justify-center items-center gap-1 whitespace-normal">
+            <div className="flex justify-center items-center gap-1 whitespace-normal">
               &copy;
-              <AutoDateTime />{" "}
-              <span> EventGO Copyright and rights reserved</span>
-            </p>
+              <AutoDateTime /> <p> EventGO Copyright and rights reserved</p>
+            </div>
             <p className="flex gap-2 justify-center items-center">
               <span>Terms and Condition</span>
               <span className="w-[0.2rem] h-[0.2rem] bg-white rounded-full" />

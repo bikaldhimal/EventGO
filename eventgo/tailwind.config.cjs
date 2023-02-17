@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -25,10 +29,10 @@ module.exports = {
         support_bg: "#F8F6FD",
         ratings: "#FDBC22",
         footer: "#11151E",
-        green: "#5DDA6A",
+        greenCustom: "#5DDA6A",
         form_bg: "#191F2B",
       },
     },
   },
-  plugins: [],
+  plugins: [require("flowbite/plugin")],
 };

@@ -11,7 +11,7 @@ const AutoDateTime = () => {
       clearInterval(intervalId);
     };
   }, []);
-  return <p>{year}</p>;
+  return <div>{year}</div>;
 };
 
 export default AutoDateTime;
