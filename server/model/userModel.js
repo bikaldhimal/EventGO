@@ -10,29 +10,24 @@ var UserSchema = new Schema({
     maxlength: 20,
     required: true,
   },
-  password: {
-    type: String,
-    required: true,
-    minlength: 8,
-  },
   email: {
     type: String,
     required: true,
     unique: true,
   },
+  password: {
+    type: String,
+    required: true,
+    minlength: 8,
+  },
   role: {
-    type: Number,
-    // 0 = eventmanager, 1 = Artist, 2 = general user, 3 = admin
-    enum: [0, 1, 2, 3],
-    default: 2,
+    type: String,
+    enum: ["user", "actor", "manager", "admin"],
     require: [true, "role is required"],
   },
   isActive: {
     type: Boolean,
     default: false,
-  },
-  adminCount: {
-    type: Number,
   },
   date: {
     type: Date,

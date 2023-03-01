@@ -7,7 +7,7 @@ require("dotenv").config();
 // sign Up controller
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, role } = req.body;
     // checking for emplty fields
     if (!name)
       return res.status(400).json({
@@ -24,15 +24,9 @@ exports.signup = async (req, res) => {
         error: "password is required",
         status: 404,
       });
-    if (!confirmPassword)
+    if (!role)
       return res.status(400).json({
-        error: "confirm_password is required",
-        status: 404,
-      });
-    // checking confirm_password matches password
-    if (confirmPassword !== password)
-      return res.status(400).json({
-        error: "confirm_password should be same as password",
+        error: "role is required",
         status: 404,
       });
     // checking if the user alresdy exists in database
@@ -50,6 +44,7 @@ exports.signup = async (req, res) => {
       name,
       email,
       password,
+      role,
     });
     // hashing the password and saving it to database
     const salt = await bcrypt.genSalt(10);
@@ -74,8 +69,6 @@ exports.login = async (req, res) => {
     const user = await User.findOne({
       email,
     });
-    console.log(email);
-    console.log(user);
     if (!user) {
       return res.status(200).json({
         error: "User not found",
@@ -91,6 +84,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       {
         id: user._id,
+        role: user.role,
       },
       process.env.JWT_SECRET,
       {
@@ -103,6 +97,7 @@ exports.login = async (req, res) => {
     res.status(200).json({
       token,
       isActive: true,
+      role: user.role,
     });
   } catch (err) {
     res.status(500).json({

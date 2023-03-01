@@ -1,10 +1,9 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import { HiMenuAlt3 } from "react-icons/hi";
+import { HiMenuAlt3, HiUserGroup } from "react-icons/hi";
 import { SiEventbrite } from "react-icons/si";
-import { HiUserGroup } from "react-icons/hi";
 import { FaUserAlt } from "react-icons/fa";
-import { MdMessage } from "react-icons/md";
+import { MdMessage, MdOutlineHelp } from "react-icons/md";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import AppBar from "./appBar";
 
@@ -14,6 +13,7 @@ const ActorNav = () => {
     { name: "profile", link: "/actor/profile", icon: FaUserAlt },
     { name: "follower", link: "/actor/follower", icon: HiUserGroup },
     { name: "message", link: "/actor/message", icon: MdMessage },
+    { name: "help", link: "/actor/help", icon: MdOutlineHelp },
     { name: "logout", link: "/login", icon: RiLogoutCircleLine, margin: true },
   ];
   const [open, setOpen] = React.useState(true);

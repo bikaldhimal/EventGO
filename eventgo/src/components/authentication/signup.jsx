@@ -1,78 +1,90 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "./../../axios";
 import LandingLogo from "../../assets/images/LandingLogo.svg";
 import Nepathya from "../../assets/images/Nepathya.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
   const navigate = useNavigate();
-
-  const [showPassword1, setShowPassword1] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
-  const [selected, setSelected] = useState("");
-
-  const handleCheckboxChange = (event) => {
-    setSelected(event.target.value);
-  };
-
-  const [showAlert, setShowAlert] = useState(false);
-
-  const handleButtonClick = () => {
-    setShowAlert(true);
-    setTimeout(() => setShowAlert(false), 3000);
-  };
 
   // Signup controller for front-end
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const [isChecked, setIsChecked] = useState(false);
+  const [role, setRole] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const handleEmptyFields = () => {
+    // Check if a notification with the ID 'empty-fields' is currently active
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Fields are empty!", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields", // Set the ID of the notification
+      });
+    }
+  };
+
+  const handleInvalidCredentials = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.warning("Password doesn't match!", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleError = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleSuccess = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.success(success, {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty",
+      });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name && !email && !password && !confirmPassword) {
-      {
-        // alert("The fields are empty, Please fill all the fields");
-        showAlert && (
-          <div
-            className="bg-blue-500 text-white p-4 rounded-lg"
-            style={{ position: "absolute", top: "10px", right: "10px" }}
-          >
-            Please fill all the fields and try again
-          </div>
-        );
-      }
+    if (!name || !email || !password || !confirmPassword || !role) {
+      handleEmptyFields();
     } else {
       if (password !== confirmPassword) {
-        // alert("The fields are empty, Please fill all the fields");
-        showAlert && (
-          <div
-            className="bg-blue-500 text-white p-4 rounded-lg"
-            style={{ position: "absolute", top: "10px", right: "10px" }}
-          >
-            Password didn't match <br />
-            Please try again
-          </div>
-        );
+        handleInvalidCredentials();
       } else {
         axios
-          .post("http://localhost:3000/api/user/signup", {
+          .post("/user/signup", {
             name,
             email,
             password,
+            role,
           })
           .then((response) => {
-            if (response.data.success) {
-              setSuccess(response.data.message);
+            if (response.data.status === 201) {
+              setSuccess("User created successfully");
               navigate("/login");
+              handleSuccess();
             } else setError(response.data.message);
           })
           .catch((error) => {
-            setError(error.message);
+            setError("Something went wrong!");
+            console.log(error);
+            handleError();
           });
       }
     }
@@ -93,7 +105,6 @@ const Signup = () => {
         />
         <form
           action=""
-          // onSubmit={handleSubmit}
           className="flex flex-col mx-12 md:mx-16 lg:mx-20 xl:mx-20 mt-10"
         >
           <input
@@ -103,6 +114,7 @@ const Signup = () => {
             onChange={(e) => setName(e.target.value)}
             type="text"
             placeholder="Full Name *"
+            autoComplete="name"
             required
             className="flex justify-between items-center text-[#777575] outline-0 border-[0.05rem] border-light_gray focus:border-[#0C61FE] focus:border-[0.05rem] mb-5 text-[16px] p-2 rounded-md shadow-sm tracking-wide"
           />
@@ -115,88 +127,82 @@ const Signup = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="text-[#777575] outline-0 border-[0.05rem]  border-light_gray focus:border-[#0C61FE] focus:border-[0.5] mb-5 text-[16px] p-2 rounded-md shadow-sm tracking-wide"
             placeholder="Email *"
+            required
+            autoComplete="email"
           />
-          <div className="flex justify-between items-center text-[#777575] outline-0 border-[0.05rem] border-light_gray focus:border-[#0C61FE] focus:border-[0.05rem] mb-5 text-[16px] p-2 rounded-md shadow-sm tracking-wide">
-            <input
-              type={showPassword1 ? "text" : "password"}
-              id="password"
-              name="password"
-              className="outline-0"
-              placeholder="Enter your password *"
-              required
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <span
-              onClick={() => setShowPassword1(!showPassword1)}
-              className="cursor-pointer text-gray_title"
-            >
-              {showPassword1 ? (
-                <AiFillEyeInvisible className="text-gray_title hover:text-title" />
-              ) : (
-                <AiFillEye className="text-gray_title hover:text-title" />
-              )}
-            </span>
-          </div>
-          <div className="flex justify-between items-center text-[#777575] outline-0 border-[0.05rem] border-light_gray focus:border-[#0C61FE] focus:border-[0.05rem] mb-5 text-[16px] p-2 rounded-md shadow-sm tracking-wide">
-            <input
-              type={showPassword2 ? "text" : "password"}
-              id="confirmPassword"
-              name="confirmPassword"
-              required
-              className="outline-0"
-              placeholder="Re-enter your password *"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <span
-              onClick={() => setShowPassword2(!showPassword2)}
-              className="cursor-pointer text-gray_title"
-            >
-              {showPassword2 ? (
-                <AiFillEyeInvisible className="text-gray_title hover:text-title" />
-              ) : (
-                <AiFillEye className="text-gray_title hover:text-title" />
-              )}
-            </span>
-          </div>
 
-          <div className="flex flex-col gap-1">
-            <div className="flex gap-2 mx-3 justify-start items-center">
-              <input
-                type="checkbox"
-                value="option3"
-                onChange={handleCheckboxChange}
-                checked={selected === "option3"}
-                className="w-fit h-fit focus:outline-blue-500 active:outline-red-500 outline-none"
-              />
-              <label htmlFor="" className="text-[#9F9F9F] text-[15px]">
-                Are you an artist?
-              </label>
-            </div>
-            <div className="flex gap-2 mx-3 justify-start items-center">
-              <input
-                type="checkbox"
-                value="option1"
-                defaultChecked
-                onChange={handleCheckboxChange}
-                checked={selected === "option1"}
-                className="w-fit h-fit focus:outline-blue-500 active:outline-red-500 outline-none"
-              />
-              <label htmlFor="" className="text-[#9F9F9F] text-[15px]">
-                Are you a General User?
-              </label>
-            </div>
-            <div className="flex gap-2 mx-3 justify-start items-center">
-              <input
-                type="checkbox"
-                value="option2"
-                onChange={handleCheckboxChange}
-                checked={selected === "option2"}
-                className="w-fit h-fit focus:outline-blue-500 active:outline-red-500 outline-none"
-              />
-              <label htmlFor="" className="text-[#9F9F9F] text-[15px]">
-                Are you an Event Manager?
-              </label>
-            </div>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="text-[#777575] outline-0 border-[0.05rem]  border-light_gray focus:border-[#0C61FE] focus:border-[0.5] mb-5 text-[16px] p-2 rounded-md shadow-sm tracking-wide"
+            placeholder="Enter your password *"
+            required
+            autoComplete="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+            autoComplete="password"
+            className="text-[#777575] outline-0 border-[0.05rem]  border-light_gray focus:border-[#0C61FE] focus:border-[0.5] mb-5 text-[16px] p-2 rounded-md shadow-sm tracking-wide"
+            placeholder="Re-enter your password *"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+
+          <div className="flex items-center mb-2">
+            <input
+              checked={role === "user"}
+              onChange={(e) => setRole(e.target.value)}
+              id="default-radio-1"
+              type="radio"
+              value="user"
+              name="role"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="default-radio-1"
+              className="ml-2 text-sm font-medium text-[#777575] dark:text-gray-300"
+            >
+              I'm a User
+            </label>
+          </div>
+          <div className="flex items-center mb-2">
+            <input
+              checked={role === "actor"}
+              onChange={(e) => setRole(e.target.value)}
+              id="default-radio-2"
+              type="radio"
+              value="actor"
+              name="role"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="default-radio-2"
+              className="ml-2 text-sm font-medium text-[#777575] dark:text-gray-300"
+            >
+              I'm an artist
+            </label>
+          </div>
+          <div className="flex items-center">
+            <input
+              checked={role === "manager"}
+              onChange={(e) => setRole(e.target.value)}
+              id="default-radio-3"
+              type="radio"
+              value="manager"
+              name="role"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="default-radio-3"
+              className="ml-2 text-sm font-medium text-[#777575] dark:text-gray-300"
+            >
+              I'm a manager
+            </label>
           </div>
 
           <div className="flex flex-col justify-center items-center mt-10 w-full">
@@ -222,33 +228,17 @@ const Signup = () => {
             onClick={(e) => {
               handleSubmit(e);
             }}
-            className="mt-12 mx-8 px-10 py-2 bg-[#0C61FE] hover:bg-[#1b41d8] text-[#ffffff] font-medium rounded-2xl shadow-lg"
+            className="mt-6 mx-8 px-10 py-2 bg-[#0C61FE] hover:bg-[#1b41d8] text-[#ffffff] font-medium rounded-2xl shadow-lg"
           >
             Create Account
           </button>
-          {error && showAlert && (
-            <div
-              className="bg-blue-500 text-white p-4 rounded-lg"
-              style={{ position: "absolute", top: "10px", right: "10px" }}
-            >
-              {error}
-            </div>
-          )}
-          {success && showAlert && (
-            <div
-              className="bg-blue-500 text-white p-4 rounded-lg"
-              style={{ position: "absolute", top: "10px", right: "10px" }}
-            >
-              {success}
-            </div>
-          )}
 
-          <div className="flex mt-10 mx-10 justify-center items-center">
+          <div className="flex mt-6 mx-10 justify-center items-center">
             <div className="w-[3rem] mx-5 h-[0.05rem] bg-[#9F9F9F]"></div>
             <p className="text-[#9F9F9F]">or</p>
             <div className="w-[3rem] mx-5 h-[0.05rem] bg-[#9F9F9F]"></div>
           </div>
-          <p className="flex justify-center items-center mt-10 text-[#9F9F9F] text-sm gap-2">
+          <p className="flex justify-center items-center mt-6 text-[#9F9F9F] text-sm gap-2">
             Already on EventGO?{" "}
             <Link to="/login">
               <span className="text-[#74A470] hover:underline hover:cursor-pointer">
@@ -257,6 +247,7 @@ const Signup = () => {
             </Link>
           </p>
         </form>
+        <ToastContainer />
       </div>
     </section>
   );

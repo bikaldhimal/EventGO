@@ -67,7 +67,7 @@ const Support = () => {
 
             <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 xl:gap-6 2xl:gap-8 justify-center items-center lg:flex-start lg:items-start">
               {/* icon */}
-              <div className="flex justify-center items-center p-5 xl:p-6 2xl:p-7 bg-white shadow-md rounded-xl text-green hover:bg-green hover:text-white delay-[65ms]">
+              <div className="flex justify-center items-center p-5 xl:p-6 2xl:p-7 bg-white shadow-md rounded-xl text-greenCustom hover:bg-greenCustom hover:text-white delay-[65ms]">
                 <TfiPulse className="w-10 h-10 xl:w-10 xl:h-10 2xl:w-10 2xl:h-10" />
               </div>
               {/* icon end */}
@@ -89,7 +89,7 @@ const Support = () => {
 
             <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 xl:gap-6 2xl:gap-8 justify-center items-center">
               {/* icon */}
-              <div className="flex justify-center items-center p-5 xl:p-6 2xl:p-7 bg-white shadow-md rounded-xl text-green hover:bg-green hover:text-white delay-[65ms]">
+              <div className="flex justify-center items-center p-5 xl:p-6 2xl:p-7 bg-white shadow-md rounded-xl text-greenCustom hover:bg-greenCustom hover:text-white delay-[65ms]">
                 <HiChartBar className="w-10 h-10 xl:w-10 xl:h-10 2xl:w-10 2xl:h-10" />
               </div>
               {/* icon end */}
@@ -110,7 +110,7 @@ const Support = () => {
 
             <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 xl:gap-6 2xl:gap-8 justify-center items-center">
               {/* icon */}
-              <div className="flex justify-center items-center p-5 xl:p-6 2xl:p-7 bg-white shadow-md rounded-xl text-green hover:bg-green hover:text-white delay-[65ms]">
+              <div className="flex justify-center items-center p-5 xl:p-6 2xl:p-7 bg-white shadow-md rounded-xl text-greenCustom hover:bg-greenCustom hover:text-white delay-[65ms]">
                 <GiEngagementRing className="w-10 h-10 xl:w-10 xl:h-10 2xl:w-10 2xl:h-10" />
               </div>
               {/* icon end */}

@@ -1,10 +1,11 @@
 import React from "react";
+// import { Link } from "react-router-dom";
 import { SiEventbrite, SiGoogleanalytics } from "react-icons/si";
 
-const Overview = () => {
+const AdminDashboard = () => {
   return (
     <>
-      <div className="container mx-auto h-[50rem] overflow-hidden overflow-y-auto bg-slate-50 p-5 rounded-md">
+      <div className="container mx-auto min-h-screen overflow-hidden overflow-y-auto bg-slate-50 p-5 rounded-md">
         <div className="grid grid-flow-row gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* card */}
           <div className="bg-white shadow-md shadow-gray-300 rounded-lg relative w-fit mt-8">
@@ -50,4 +51,4 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+export default AdminDashboard;

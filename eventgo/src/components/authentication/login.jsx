@@ -1,39 +1,55 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "./../../axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LandingLogo from "../../assets/images/LandingLogo.svg";
 import Nepathya from "../../assets/images/Nepathya.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
   let navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState("");
+  const [error, setError] = useState("");
 
   const handleEmptyFields = () => {
-    toast.error("Fields are empty!", {
-      position: "top-center",
-      autoClose: 2000,
-    });
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Fields are empty!", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
   };
 
   const handleInvalidCredentials = () => {
-    toast.warning("Invalid Credentials!", {
-      position: "top-center",
-      autoClose: 2000,
-    });
+    if (!toast.isActive("empty-fields")) {
+      toast.warning("Invalid Credentials!", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleError = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/user/login",
-        { email, password }
+        "/user/login",
+        { email, password },
+        { withCredentials: true }
       );
       console.log(response.data);
 
@@ -44,14 +60,19 @@ const Login = () => {
           setIsActive(true);
           localStorage.setItem("token", response.data.token);
           console.log(isActive);
-          navigate("/actor");
+          if (response.data.role === "actor") return navigate("/actor");
+          if (response.data.role === "manager") return navigate("/manager");
+          if (response.data.role === "user") return navigate("/user");
+          if (response.data.role === "admin") return navigate("/admin");
         } else {
           setIsActive(false);
           handleInvalidCredentials();
         }
       }
     } catch (error) {
-      console.error(error);
+      setError(error.message);
+      console.log(error);
+      handleError();
     }
   };
 
@@ -81,6 +102,7 @@ const Login = () => {
             id="email"
             name="email"
             value={email}
+            autoComplete="email"
             required
             onChange={(e) => setEmail(e.target.value)}
             className="text-[#777575] tracking-widest outline-0 border-[0.05rem] border-[#9F9F9F] focus:border-[#0C61FE] focus:border-[0.07rem] mb-5 text-[14px] py-2 px-3 rounded-md"
@@ -88,57 +110,34 @@ const Login = () => {
           <label htmlFor="" className="text-[#9F9F9F] font-medium mb-3">
             Password
           </label>
-          {/* <div className="flex justify-between items-center gap-3 outline-0 border-[0.05rem] border-[#9F9F9F] focus:border-[#0C61FE] focus:border-[0.07rem] mb-5 text-[14px] py-2 px-3 rounded-md">
-            <input
-              type="passowrd"
-              // type={showPassword ? "text" : "password"}
-              className="outline-0 order-0 focus:outline-none focus:border-none active:outline-none active:border-none w-full py-1"
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="cursor-pointer text-gray_title"
-            >
-              {showPassword ? (
-                <AiFillEyeInvisible className="text-gray_title hover:text-title" />
-              ) : (
-                <AiFillEye className="text-gray_title hover:text-title" />
-              )}
-            </span>
-          </div> */}
-          <div className="flex justify-between items-center gap-1 tracking-widest text-[#777575] outline-0 border-[0.05rem] border-[#9F9F9F] focus:border-[#0C61FE] focus:border-[0.07rem] mb-5 text-[14px] py-2 px-3 rounded-md">
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              value={password}
-              required
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border-none outline-none p-0 focus:border-none focus:outline-blue-700"
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="cursor-pointer text-gray_title"
-            >
-              {showPassword ? (
-                <AiFillEyeInvisible className="text-gray_title hover:text-title" />
-              ) : (
-                <AiFillEye className="text-gray_title hover:text-title" />
-              )}
-            </span>
-          </div>
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={password}
+            autoComplete="current-password"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+            className="text-[#777575] tracking-widest outline-0 border-[0.05rem] border-[#9F9F9F] focus:border-[#0C61FE] focus:border-[0.07rem] mb-5 text-[14px] py-2 px-3 rounded-md"
+          />
+
           <Link
             to="/recovery"
             className="flex text-[#74A470] items-center text-sm hover:cursor-pointer hover:underline w-fit"
           >
             Forgot Password?
           </Link>
-          <button
-            type="submit"
-            onClick={(e) => handleSubmit(e)}
-            className="flex p-2 justify-center items-center mx-6 mt-12 bg-[#0C61FE] hover:bg-[#1b41d8] text-[#ffffff] font-medium rounded-2xl shadow-lg"
-          >
-            Login
-          </button>
+          <div className="inline-flex justify-center items-center mt-10">
+            <button
+              type="submit"
+              onClick={(e) => handleSubmit(e)}
+              className="flex relative rounded-2xl justify-center items-center w-fit px-20 py-2 overflow-hidden group bg-[#0C61FE] hover:bg-gradient-to-r hover:from-[#0C61FE] hover:to-[#1b41d8] text-white hover:ring-[#1b41d8] transition-all ease-out duration-150"
+            >
+              <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-52 ease"></span>
+              <span className="relative">Login</span>
+            </button>
+          </div>
           <ToastContainer />
           <div className="flex mt-10 mx-10 justify-center items-center">
             <div className="w-[3rem] mx-5 h-[0.05rem] bg-[#9F9F9F]"></div>

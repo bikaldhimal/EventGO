@@ -16,20 +16,36 @@ var EventSchema = new Schema({
     minlength: 8,
     maxlength: 100,
   },
-  date: {
-    type: Date,
+  category: {
+    type: String,
     required: true,
+    minlength: 3,
+    maxlength: 20,
   },
-  contact: {
+  // date: {
+  //   type: Date,
+  //   required: true,
+  // },
+  target: {
     type: String,
     minlength: 10,
+    maxlength: 20,
+  },
+  fee: {
+    type: Number,
+  },
+  phonenumber: {
+    type: Number,
+    minlength: 10,
+    maxlength: 14,
+  },
+  image: {
+    type: String,
+    required: true,
   },
   email: {
     type: String,
     required: true,
-  },
-  fee: {
-    type: Number,
   },
   description: {
     type: String,
@@ -38,4 +54,4 @@ var EventSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("User", EventSchema);
+module.exports = mongoose.model("Event", EventSchema);

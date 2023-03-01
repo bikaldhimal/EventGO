@@ -1,17 +1,23 @@
 // Create express app
-var express = require("express");
-var mongoose = require("mongoose");
+const express = require("express");
+const mongoose = require("mongoose");
 const session = require("express-session");
 const multer = require("multer");
 const cors = require("cors");
 const passport = require("passport");
 const isLoggedIn = require("./middleware/isLoggedIn");
 require("./googleAuth");
-var app = express();
-
+const app = express();
 const verifyToken = require("./middleware/verifyToken");
 
-// Fog Google Authentication
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+// For Google Authentication
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -21,8 +27,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(cors());
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
@@ -34,8 +38,8 @@ app.use("/api/user", userRoutes);
 const adminRoutes = require("./routes/adminRoute");
 app.use("/api/admin", adminRoutes);
 
-// const eventRoute = require("./routes/eventRoute");
-// app.use("/api/events", eventRoute);
+const eventRoute = require("./routes/eventRoute");
+app.use("/api/event", eventRoute);
 
 // File Upload (Image Upload)
 const storage = multer.diskStorage({

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdSend } from "react-icons/md";
 
-const Help = () => {
+const ActorHelp = () => {
   const [showHide, setShowHide] = useState(false);
   return (
     <>
@@ -42,50 +42,23 @@ const Help = () => {
           {/* feedback form */}
           {showHide && (
             <form className="feedbackForm flex flex-col justify-start items-start mt-3 gap-3">
-              {/* <div className="relative w-full">
-                <textarea
-                  type="text"
-                  rows="6"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-5 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter your feedback here..."
-                  required
-                />
+              <div className="flex flex-col lg:items-start items-center w-full px-2 gap-2 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
                 <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 flex items-center pr-3"
-                ></button>
-              </div>
-              <button
-                type="submit"
-                className="inline-flex justify-start items-center gap-2 py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                <MdSend />
-                Send
-              </button> */}
-              <div className="flex items-center w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
-                <button
-                  type="button"
-                  className="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                  type="submit"
+                  className="inline-flex justify-center text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
                 >
-                  <svg
-                    aria-hidden="true"
-                    className="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                  <span className="sr-only">Upload image</span>
+                  <label class="block">
+                    <span class="sr-only">Choose File</span>
+                    <input
+                      type="file"
+                      class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    />
+                  </label>
                 </button>
                 <textarea
                   id="chat"
                   rows="6"
-                  className="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block mx-4 lg:mx-0 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Enter your feedback here..."
                 ></textarea>
               </div>
@@ -103,44 +76,43 @@ const Help = () => {
         <li className="mb-10 ml-4">
           <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
           <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-            Overview
+            Event
           </time>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:underline hover:text-blue-700 hover:decoration-blue-700">
-            <Link to="/manager/overview">
-              View and analyze the dashboard for your events
-            </Link>
+            <Link to="/actor">View and analyze all the events Manager</Link>
           </h3>
           <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-            The overview section contains the dashboard for analyzing the events
-            and their related attributes.
+            The event section contains all the events posted by event organizer
+            from where you can analyze the nearby events, request for
+            participation, and buy tickets as well.
           </p>
         </li>
         <li className="mb-10 ml-4">
           <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
           <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-            Events
+            Profile
           </time>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:underline hover:text-blue-700 hover:decoration-blue-700">
-            <Link to="/manager/event/add">
-              Create and manipulate your events
-            </Link>
+            <Link to="/actor/profile">Manage your profile</Link>
           </h3>
           <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-            The events section assist you creating, analyzing, and manipulating
-            your events along with Todo
+            The profile section contains all the details of your profile. You
+            can update and analyze your profile details and can change your
+            password for login.
           </p>
         </li>
         <li className="mb-10 ml-4">
           <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
           <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-            Artist
+            Follower
           </time>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:underline hover:text-blue-700 hover:decoration-blue-700">
-            <Link to="/manager/artist">View available artist</Link>
+            <Link to="/actor/follower">View available artist</Link>
           </h3>
           <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-            The Artist section contains the list of artists you can follow or
-            start converstaion with.
+            The follower section contains the list of artists and organizers you
+            can follow, followers, and people you may know as well through which
+            you can start making connection.
           </p>
         </li>
         <li className="ml-4">
@@ -149,13 +121,11 @@ const Help = () => {
             Message
           </time>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:underline hover:text-blue-700 hover:decoration-blue-700">
-            <Link to="/manager/message">
-              Start conversations with event manager and artist
-            </Link>
+            <Link to="/actor/message">Start conversations</Link>
           </h3>
           <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-            The message section contains the conversation with the event manager
-            and artist and sell all the available users.
+            The message section contains the conversation you've already did
+            with the event manager and artist and see all the available users.
           </p>
         </li>
       </ol>
@@ -163,4 +133,4 @@ const Help = () => {
   );
 };
 
-export default Help;
+export default ActorHelp;

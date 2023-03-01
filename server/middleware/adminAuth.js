@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
       throw new Error();
     }
 
-    if (user.role !== 3) {
+    if (user.role !== "admin") {
       return res.status(401).send({ error: "Access denied. Admin only." });
     }
 

@@ -1,31 +1,12 @@
-var express = require("express");
-var router = express.Router();
-const jwt = require("jsonwebtoken");
-const secret = "mysecret";
+const express = require("express");
+const router = express.Router();
 
-var eventController = require("./../controller/eventController");
+const eventController = require("./../controller/eventController");
+const verifyToken = require("./../middleware/verifyToken");
 
-// verify token
-function verifyToken(req, res, next) {
-  const bearerHeader = req.headers["authorization"];
-  if (typeof bearerHeader !== "undefined") {
-    const bearer = bearerHeader.split(" ");
-    const bearerToken = bearer[1];
-    jwt.verify(bearerToken, secret, (err, data) => {
-      if (err) {
-        return res.sendStatus(401);
-      }
-      req.token = data;
-      next();
-    });
-  } else {
-    return res.sendStatus(401);
-  }
-}
-
-router.get("/show", verifyToken, eventController.getAllEvents);
 router.post("/add", verifyToken, eventController.addEvent);
-router.post("/update/:id", verifyToken, eventController.updateEvent);
-router.post("/delete/:id", verifyToken, eventController.deleteEvent);
+router.get("/show", verifyToken, eventController.getAllEvents);
+// router.post("/update", verifyToken, eventController.updateEvent);
+// router.post("/delete", verifyToken, eventController.deleteEvent);
 
 module.exports = router;

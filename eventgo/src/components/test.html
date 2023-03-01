@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Test App</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="flex flex-col m-0 p-0 w-full min-h-screen bg-slate-100">
+    <nav class="flex justify-between p-5 bg-gray-700">
+      <h3 class="text-xl text-white">EventGO</h3>
+      <ul class="flex gap-5 mr-20 text-white">
+        <li><a href="home" class="hover:underline">Home</a></li>
+        <li><a href="about" class="hover:underline">About</a></li>
+        <li><a href="contact" class="hover:underline">Contact</a></li>
+      </ul>
+    </nav>
+    <section id="home" class="flex flex-col px-5 pt-5 gap-5">
+      <h1 class="text-2xl font-serif">Welome to Event Management Website</h1>
+      <img
+        src="https://images.unsplash.com/photo-1674574124345-02c525664b65?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
+        alt="hero section image"
+        class="w-96 h-48"
+      />
+      <div class="flex flex-col w-[25vw] text-justify gap-5">
+        <p>
+          We're here to help you plan the perfect event, whether it's a
+          corporate gathering, a wedding, or a birthday party. Our team of
+          experienced event planners will work closely with you to understand
+          your vision and bring it to life, ensuring that every detail is taken
+          care of.
+        </p>
+        <p>
+          From venue selection and catering to entertainment and decor, we'll
+          handle everything, leaving you free to enjoy your event and create
+          unforgettable memories. With our expertise and attention to detail,
+          you can be sure that your event will be a resounding success.
+        </p>
+        <button
+          class="px-3 py-2 bg-blue-500/80 hover:bg-blue-500 rounded-md w-48 h-10 text-white"
+        >
+          Get Started
+        </button>
+      </div>
+    </section>
+    <section id="about" class="px-5 pt-5">
+      <h1 class="text-2xl font-serif">You can play audio</h1>
+      <audio
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        controls
+      ></audio>
+      <h1 class="text-2xl font-serif">You can play video</h1>
+      <video
+        class="aspect-video"
+        src="https://www.pexels.com/video/random-footages-of-landscapes-and-places-3877494/"
+        controls
+      ></video>
+    </section>
+    <section id="contact" class="px-5 pt-5">
+      <h1 class="text-2xl font-serif">Contact</h1>
+      <form
+        class="flex flex-col w-sm mb-20 gap-2"
+        action="test.html"
+        method="POST"
+      >
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button
+          class="flex justify-center items-center p-5 bg-blue-500/80 hover:bg-blue-500 w-28 h-10 rounded-md text-white"
+        >
+          Submit
+        </button>
+      </form>
+    </section>
+
+    <script src="" async defer></script>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
+import NepathyaProfile from "../../assets/images/NepathyaProfile.svg";
 
 const AppBar = () => {
   return (

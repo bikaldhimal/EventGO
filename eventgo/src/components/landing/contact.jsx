@@ -108,9 +108,17 @@ const Contact = () => {
                 ></textarea>
               </div>
               {/* input fields end */}
-              <button className="flex justify-center items-center text-center px-4 py-2 md:font-medium lg:text-lg bg-green hover:bg-orange-500 text-white rounded-md delay-[10ms] shadow-sm shadow-green/25 duration-300">
-                Request
-              </button>
+              <div className="flex justify-center items-center lg:justify-start lg:items-center">
+                <a
+                  href="#_"
+                  className="relative inline-flex items-center justify-start w-48 lg:w-52 px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
+                >
+                  <span className="w-48 h-48 rounded-md rotate-[-40deg] bg-greenCustom absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                  <span className="relative text-center w-full text-black transition-colors duration-300 ease-in-out group-hover:text-white">
+                    Request
+                  </span>
+                </a>
+              </div>
             </form>
 
             {/* form end */}
@@ -135,7 +143,7 @@ const Contact = () => {
                   placeholder="Enter your email here"
                   className="bg-transparent text-white w-64 text-sm outline-0 px-2 py-1 lowercase"
                 />
-                <div className="flex justify-center items-center bg-green w-8 h-8 rounded-full text-white hover:bg-orange-500">
+                <div className="flex justify-center items-center bg-greenCustom w-8 h-8 rounded-full text-white hover:bg-orange-500">
                   <FiArrowRight />
                 </div>
               </div>
