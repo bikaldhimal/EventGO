@@ -49,7 +49,7 @@ exports.signup = async (req, res) => {
     }
 
     // role for admin
-    const role = 3;
+    const role = "admin";
     // creating a new user/signup a user
     const newUser = new User({
       name,
@@ -76,20 +76,16 @@ exports.signup = async (req, res) => {
 };
 
 // Get all users
-exports.getUser = [
-  verifyToken,
-  async (req, res) => {
-    try {
-      const users = await User.find({});
-      res.status(200).json(users);
-    } catch (err) {
-      res.status(500).json({
-        error: err.message,
-      });
-    }
-  },
-];
-
+exports.getUser = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
 // login
 exports.login = async (req, res) => {
   try {

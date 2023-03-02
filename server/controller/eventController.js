@@ -2,6 +2,7 @@ const Event = require("./../model/eventModel");
 
 // add event
 exports.addEvent = async (req, res) => {
+  console.log("hello");
   try {
     const {
       title,
@@ -15,6 +16,7 @@ exports.addEvent = async (req, res) => {
       email,
       description,
     } = req.body;
+    console.log(req.body);
     // checking for empty fields
     if (!title) {
       return res.status(400).json({
@@ -77,6 +79,7 @@ exports.addEvent = async (req, res) => {
       title,
       venue,
       category,
+      date,
       target,
       fee,
       phonenumber,
@@ -85,6 +88,7 @@ exports.addEvent = async (req, res) => {
       description,
     });
     await newEvent.save();
+    console.log(newEvent);
     res.status(201).json(newEvent);
   } catch (err) {
     res.status(500).send(err);

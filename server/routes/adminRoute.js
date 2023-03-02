@@ -1,12 +1,14 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
 var adminController = require("./../controller/adminController");
 
-const adminAuth = require("../middleware/adminAuth");
+// const verifyToken = require("../middleware/verifyToken");
+// const isAdmin = require("../middleware/isAdmin");
+// const isLoggedIn = require("../middleware/isLoggedIn");
 
-router.post("/signup", adminController.signup);
+// router.post("/signup", adminController.signup);
 router.post("/login", adminController.login);
-router.get("/users", adminAuth, adminController.getUser);
+router.get("/users", adminController.getUser);
 
 module.exports = router;

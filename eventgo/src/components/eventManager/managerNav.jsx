@@ -1,9 +1,21 @@
 import React from "react";
+import axios from "./../../axios";
 import { Link, Outlet } from "react-router-dom";
 import { RiLogoutCircleFill } from "react-icons/ri";
 import ManagerAppBar from "./managerAppBar";
 
 const ManagerNav = () => {
+  const handleLogout = async () => {
+    try {
+      await axios.get("/user/logout");
+      console.log("Logged out successfully");
+      localStorage.removeItem("token");
+      localStorage.removeItem("isActive");
+      localStorage.removeItem("role");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className="flex w-full z-50">
@@ -131,7 +143,9 @@ const ManagerNav = () => {
                   >
                     <RiLogoutCircleFill />
                   </svg>
-                  <span className="ml-3">Logout</span>
+                  <button onClick={handleLogout} className="ml-3">
+                    Logout
+                  </button>
                 </Link>
               </li>
             </ul>
