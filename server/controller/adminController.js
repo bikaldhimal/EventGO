@@ -78,7 +78,7 @@ exports.signup = async (req, res) => {
 // Get all users
 exports.getUser = async (req, res) => {
   try {
-    const users = await User.find({});
+    const users = await User.find().where("role").ne("admin");
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json({
@@ -86,6 +86,7 @@ exports.getUser = async (req, res) => {
     });
   }
 };
+
 // login
 exports.login = async (req, res) => {
   try {

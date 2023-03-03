@@ -187,7 +187,7 @@ const Signup = () => {
               I'm an artist
             </label>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center mb-2">
             <input
               checked={role === "manager"}
               onChange={(e) => setRole(e.target.value)}

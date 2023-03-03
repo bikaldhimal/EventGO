@@ -184,9 +184,9 @@ exports.deleteUser = [
 // Logout
 exports.logout = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { token } = req.headers;
     const user = await User.findOne({
-      email,
+      token,
     });
     user.isActive = false;
     await user.save();

@@ -11,7 +11,7 @@ const app = express();
 const verifyToken = require("./middleware/verifyToken");
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "http://localhost:5175",
   credentials: true,
 };
 
@@ -28,7 +28,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/uploads/"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -110,7 +110,7 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
   console.log("Connected to EventGO Database");
-  app.listen(process.env.PORT || 8080, function () {
+  app.listen(process.env.PORT || 5051, function () {
     console.log(
       `Express server listening on port ${process.env.PORT}`,
       this.address.MONGODB_URI || "localhost",

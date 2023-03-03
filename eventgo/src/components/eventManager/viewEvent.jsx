@@ -30,7 +30,7 @@ const ViewEvent = () => {
             >
               <div className="w-full h-64 group duration-300 relative">
                 <img
-                  src="https://images.unsplash.com/photo-1617136785693-54b279bddfeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
+                  src={event.image}
                   alt="event"
                   className="object-cover w-full h-full group-hover:grayscale group-hover:scale-110 duration-200 top-0 right-0 bottom-0 left-0"
                 />

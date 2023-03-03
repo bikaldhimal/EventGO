@@ -13,11 +13,12 @@ const AddEvent = () => {
   const [target, setTarget] = useState("");
   const [fee, setFee] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleEmptyFields = () => {
     // Check if a notification with the ID 'empty-fields' is currently active
@@ -50,6 +51,10 @@ const AddEvent = () => {
     }
   };
 
+  const handleCheckboxChange = (e) => {
+    setIsChecked(e.target.checked);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
@@ -63,21 +68,23 @@ const AddEvent = () => {
     ) {
       handleEmptyFields();
     } else {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("venue", venue);
+      formData.append("category", category);
+      formData.append("date", date);
+      formData.append("image", image);
+      formData.append("target", target);
+      formData.append("fee", fee);
+      formData.append("phonenumber", phonenumber);
+      formData.append("description", description);
+      formData.append("email", email);
+
       axios
-        .post("/event/add", {
-          title,
-          venue,
-          category,
-          date,
-          target,
-          fee,
-          phonenumber,
-          image,
-          email,
-          description,
-        })
+        .post("/event/add", formData)
         .then((response) => {
-          if (response.data.status === 201) {
+          console.log(response.data);
+          if (response.data.status === 200) {
             setSuccess("Event created successfully");
             navigate("/manager/event/view");
             handleSuccess();
@@ -94,7 +101,7 @@ const AddEvent = () => {
   return (
     <>
       <div className="min-w-md w-full bg-white shadow px-10 py-10">
-        <form>
+        <form encType="multipart/form-data">
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
@@ -235,8 +242,8 @@ const AddEvent = () => {
                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 id="image"
                 name="image"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
+                // value={image}
+                onChange={(e) => setImage(e.target.files[0])}
                 type="file"
               />
             </div>
@@ -281,8 +288,11 @@ const AddEvent = () => {
           <div className="flex items-start mb-6">
             <div className="flex items-center h-5">
               <input
-                id="remember"
+                id="checkbox"
+                name="checkbox"
                 type="checkbox"
+                checked={isChecked}
+                onChange={handleCheckboxChange}
                 value=""
                 className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
                 required
@@ -304,6 +314,7 @@ const AddEvent = () => {
           </div>
           <button
             type="submit"
+            disabled={!isChecked}
             onClick={(e) => {
               handleSubmit(e);
             }}

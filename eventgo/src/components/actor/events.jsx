@@ -4,6 +4,7 @@ import axios from "./../../axios";
 const Events = () => {
   const [events, setEvents] = useState([]);
   useEffect(() => {
+    console.log("first");
     axios
       .get("/event/show")
       .then((response) => {
@@ -60,7 +61,13 @@ const Events = () => {
                   {event.title}
                 </h3>
                 <p className="text-sm font-light text-[0.7rem]">
-                  {event.date}
+                  {new Date(event.date).toLocaleDateString("en-US")}{" "}
+                  {new Date(event.date).toLocaleString("en-US", {
+                    date: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  })}
                   {/* Aug 22 2022, <span>8pm Onwards</span> */}
                 </p>
                 <p className="text-sm font-light text-[0.7rem]">

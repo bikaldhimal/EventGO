@@ -5,13 +5,11 @@ import { RiLogoutCircleFill } from "react-icons/ri";
 import ManagerAppBar from "./managerAppBar";
 
 const ManagerNav = () => {
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
     try {
       await axios.get("/user/logout");
-      console.log("Logged out successfully");
-      localStorage.removeItem("token");
-      localStorage.removeItem("isActive");
-      localStorage.removeItem("role");
+      localStorage.clear();
+      console.clear();
     } catch (error) {
       console.log(error);
     }
@@ -132,6 +130,7 @@ const ManagerNav = () => {
               <li>
                 <Link
                   to="/login"
+                  onClick={(e) => handleLogout(e)}
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                 >
                   <svg
@@ -143,9 +142,7 @@ const ManagerNav = () => {
                   >
                     <RiLogoutCircleFill />
                   </svg>
-                  <button onClick={handleLogout} className="ml-3">
-                    Logout
-                  </button>
+                  <button className="ml-3">Logout</button>
                 </Link>
               </li>
             </ul>

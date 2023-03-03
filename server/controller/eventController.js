@@ -3,6 +3,7 @@ const Event = require("./../model/eventModel");
 // add event
 exports.addEvent = async (req, res) => {
   console.log("hello");
+  console.log("datafrontend", req.body, req.file);
   try {
     const {
       title,
@@ -12,10 +13,12 @@ exports.addEvent = async (req, res) => {
       target,
       fee,
       phonenumber,
-      image,
       email,
       description,
     } = req.body;
+    console.log(req.file);
+    let image = req.file.filename;
+    console.log(image);
     console.log(req.body);
     // checking for empty fields
     if (!title) {
@@ -60,6 +63,7 @@ exports.addEvent = async (req, res) => {
         status: 404,
       });
     }
+    const imageUrl = "http://localhost:5051/";
     // checking if event already exists in database
     const event = await Event.findOne({
       title,
@@ -83,13 +87,16 @@ exports.addEvent = async (req, res) => {
       target,
       fee,
       phonenumber,
-      image,
+      image: imageUrl + req.file.filename,
       email,
       description,
     });
     await newEvent.save();
     console.log(newEvent);
-    res.status(201).json(newEvent);
+    res.json({
+      status: 200,
+      newEvent,
+    });
   } catch (err) {
     res.status(500).send(err);
     error: err.message;
