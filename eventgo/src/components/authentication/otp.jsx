@@ -1,12 +1,88 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "./../../axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Otp = () => {
-  const [showAlert, setShowAlert] = useState(false);
+  const navigate = useNavigate();
+  const [otp, setOTP] = useState("");
 
-  const handleButtonClick = () => {
-    setShowAlert(true);
-    setTimeout(() => setShowAlert(false), 3000);
+  const handleEmptyFields = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Please enter your OTP to continue", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleSuccess = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.success("An email with OTP sent successfully", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty",
+      });
+    }
+  };
+
+  const handleError = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Something went wrong", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  // Check OTP
+  const handleOTP = (e) => {
+    e.preventDefault();
+
+    if (!otp) {
+      handleEmptyFields();
+    } else {
+      axios
+        .post("/user/check-otp", {
+          otp,
+        })
+        .then((response) => {
+          if (response.status === 400) {
+            alert("Invalid OTP");
+          }
+          if (response.status === 200) {
+            navigate("/reset");
+          }
+          console.log(response);
+        })
+        .catch((error) => {
+          handleError();
+          console.log(error);
+        });
+    }
+  };
+
+  // Resend OTP
+  const resendOTP = (e) => {
+    e.preventDefault();
+    const email = localStorage.getItem("email");
+    axios
+      .post("/user/forgot-password", {
+        email,
+      })
+      .then((response) => {
+        handleSuccess();
+        if (response.status === 200) {
+          navigate("/otp");
+        }
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -30,11 +106,15 @@ const Otp = () => {
               name="text"
               id="otp"
               placeholder="OTP"
-              maxlength="6"
+              maxLength="6"
+              onChange={(e) => setOTP(e.target.value)}
               className="text-center bg-white border-[0.1rem] hover:border-light_gray active:border-light_gray focus:border-light_gray mb-5 px-5 py-3 w-full rounded-lg text-title tracking-widest text-[14px]"
             />
             <Link
               to="/reset"
+              onClick={(e) => {
+                handleOTP(e);
+              }}
               className="flex justify-center items-center w-full mb-5 px-10 py-3 bg-[#5B55FE] rounded-lg text-white hover:bg-[#FC5B62] font-medium "
             >
               Recover
@@ -42,23 +122,17 @@ const Otp = () => {
             <div className="text-gray_title text-[15px]">
               Can't get OTP?{" "}
               <button
-                onClick={handleButtonClick}
+                onClick={(e) => {
+                  resendOTP(e);
+                }}
                 className="text-[#FC5B62] hover:cursor-pointer hover:underline"
               >
                 Resend
               </button>
-              {showAlert && (
-                <div
-                  className="bg-blue-500 text-white p-4 rounded-lg"
-                  style={{ position: "absolute", top: "10px", right: "10px" }}
-                >
-                  The OTP has been sent to your email <br />
-                  Please check your inbox
-                </div>
-              )}
             </div>
           </div>
         </div>
+        <ToastContainer />
       </section>
     </>
   );

@@ -51,7 +51,6 @@ const Login = () => {
         { email, password },
         { withCredentials: true }
       );
-      console.log(response.data);
 
       if (!email && !password) {
         handleEmptyFields();

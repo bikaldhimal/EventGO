@@ -1,8 +1,68 @@
-import React from "react";
-import { Link } from "react-router-dom";
-// import LandingLogo from "../../assets/images/LandingLogo.svg";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "./../../axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Recovery = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+
+  const handleEmptyFields = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Please enter your email", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleSuccess = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.success("An email with otp has been sent successfully", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty",
+      });
+    }
+  };
+
+  const handleError = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Something went wrong", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    if (!email) {
+      handleEmptyFields();
+    } else {
+      setEmail(email.toLocaleLowerCase());
+      axios
+        .post("/user/forgot-password", {
+          email,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            handleSuccess();
+            navigate("/otp");
+            localStorage.setItem("email", email);
+          }
+          console.log(response);
+        })
+        .catch((error) => {
+          handleError();
+          console.log(error);
+        });
+    }
+  };
+
   return (
     <>
       <section className="flex justify-center items-center w-full min-h-screen relaitve bg-[#fcfbf4] font-montserrat">
@@ -28,10 +88,14 @@ const Recovery = () => {
               name="email"
               id="email"
               placeholder="Enter your email here"
+              onChange={(e) => setEmail(e.target.value)}
               className="bg-white border-[0.1rem] hover:border-light_gray active:border-light_gray focus:border-light_gray px-5 py-3 w-full rounded-lg text-title"
             />
             <Link
               to="/otp"
+              onClick={(e) => {
+                handleForgotPassword(e);
+              }}
               className="flex justify-center items-center w-full px-10 py-3 bg-[#5B55FE] rounded-lg text-white hover:bg-[#FC5B62] font-medium "
             >
               Let's Go
@@ -47,6 +111,7 @@ const Recovery = () => {
             </p>
           </div>
         </div>
+        <ToastContainer />
       </section>
     </>
   );

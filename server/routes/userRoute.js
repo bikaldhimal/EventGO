@@ -10,6 +10,9 @@ router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.post("/upload/profile", userController.uploadProfile);
 router.patch("/update", userController.updateProfile);
+router.post("/forgot-password", userController.forgotPassword);
+router.post("/check-otp", userController.checkOTP);
+router.post("/reset-password", userController.resetPassword);
 router.get("/logout", userController.logout);
 
 module.exports = router;

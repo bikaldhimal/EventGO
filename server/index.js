@@ -96,7 +96,6 @@ app.get(
       });
       token = user.id;
     }
-    // res.header("Access-Control-Allow-Credentials", true);
 
     // Successful authentication, redirect success.
     res.redirect("http://127.0.0.1:5173/google/" + token);

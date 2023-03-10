@@ -2,6 +2,8 @@ const verifyToken = require("./../middleware/verifyToken");
 const User = require("./../model/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../email/email");
+const { createHmac, createHash } = require("crypto");
 
 require("dotenv").config();
 
@@ -110,6 +112,7 @@ exports.login = async (req, res) => {
   }
 };
 
+// Update Profile Controller
 exports.updateProfile = async (req, res) => {
   try {
     const { id, name, address, description, role, password } = req.body;
@@ -182,7 +185,7 @@ exports.uploadProfile = [
   },
 ];
 
-// Update User
+// Update User Controller
 exports.updateUser = [
   verifyToken,
   async (req, res) => {
@@ -215,7 +218,7 @@ exports.updateUser = [
   },
 ];
 
-// Delete User
+// Delete User Controller
 exports.deleteUser = [
   verifyToken,
   async (req, res) => {
@@ -232,7 +235,7 @@ exports.deleteUser = [
   },
 ];
 
-// Logout
+// Logout Controller
 exports.logout = async (req, res) => {
   try {
     const { token } = req.headers;
@@ -250,4 +253,100 @@ exports.logout = async (req, res) => {
       error: err.message,
     });
   }
+};
+
+// Forgot Password Controller
+exports.forgotPassword = async (req, res, next) => {
+  //check if user emai exists in the database
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  // createResetToken method is coming from usermodel file
+  const otp = await user.createResetToken();
+
+  const secret = process.env.SECRET;
+  user.passwordResetToken = createHmac("sha256", secret)
+    .update(`${otp}`)
+    .digest("hex");
+  user.passwordResetTokenExpiresIn = Date.now() + 10 * 60 * 1000;
+
+  await user.save();
+
+  const message = `Forgot your password ? Enter the otp  \n
+  ${otp}. \n If you don't forget your password , please ignore this email! `;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Your password reset otp (only valids for 10 minutes)",
+      message,
+    });
+    res.status(200).json({
+      status: 200,
+      user,
+
+      message: "Email sent succesfully",
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetTokenExpiresIn = undefined;
+    console.log(err);
+    await user.save();
+
+    return res.status(400).json({
+      status: "error",
+      message: err,
+    });
+  }
+};
+
+// Check OTP Controller
+exports.checkOTP = async (req, res, next) => {
+  const otp = req.body.otp;
+  const hashedToken = createHmac("sha256", process.env.SECRET)
+    .update(otp)
+    .digest("hex");
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetTokenExpiresIn: { $gt: Date.now() },
+  });
+  // if token is not valid or expired
+  if (!user) {
+    return res.json({
+      status: 400,
+      message: "Invalid token",
+    });
+  }
+  res.json({
+    status: 200,
+    message: "OTP token has been valid",
+  });
+};
+
+// Password reset controller
+exports.resetPassword = async (req, res, next) => {
+  const password = req.body.password;
+  const user = await User.findOne({
+    email: req.body.email,
+  });
+  if (!user) {
+    res.json({
+      status: 404,
+      message: "User does not exist",
+    });
+  }
+  user.password = password;
+  user.passwordResetToken = undefined;
+  user.passwordResetTokenExpiresIn = undefined;
+
+  // hashing the password and saving it to database
+  const salt = await bcrypt.genSalt(10);
+  user.password = bcrypt.hashSync(password, salt);
+
+  await user.save();
+
+  res.json({
+    status: 200,
+    message: "Reset Successfully",
+  });
 };
