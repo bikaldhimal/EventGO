@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BsFillPencilFill } from "react-icons/bs";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 
 const Profile = () => {
+  const name = localStorage.getItem("name");
+  const address = localStorage.getItem("address");
+  const description = localStorage.getItem("description");
   return (
     <>
       <div className="w-full flex flex-col sm:flex-col lg:flex-row xl:flex-row 2xl:flex-row 3xl:flex-row gap-10">
@@ -15,15 +20,14 @@ const Profile = () => {
           </div>
 
           <div className="flex flex-col justify-center gap-2 mt-2 items-center text-center">
-            <h1 className="text-xl font-semibold text-gray-900 mb-2">
-              Nepathya
-            </h1>
+            <h1 className="text-xl font-semibold text-gray-900 mb-2">{name}</h1>
             <p className="text-sm text-gray-500 text-center font-light">
-              Drawing inspiration from a range of musical genres, including pop,
+              {/* Drawing inspiration from a range of musical genres, including pop,
               soul, and R&B, Nepathya has developed a unique sound that sets our
               apart from the crowd. Our rich, velvety vocals are perfectly
               complemented by a powerful stage presence, making for an
-              unforgettable live experience.
+              unforgettable live experience. */}
+              {description}
             </p>
           </div>
 
@@ -112,11 +116,22 @@ const Profile = () => {
               Re-enter new password
             </label>
           </div>
-          <button className="relative w-fit inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
-            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+          {/* <button className="relative w-fit inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"> */}
+          {/* <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
               Update
-            </span>
-          </button>
+            </span> */}
+          <Button
+            variant="contained"
+            className="text-white w-fit bg-blue-700/80"
+          >
+            Update
+          </Button>
+          {/* </button> */}
+          {/* <Stack spacing={2} direction="row">
+            <Button variant="text">Text</Button>
+            <Button variant="contained">Contained</Button>
+            <Button variant="outlined">Outlined</Button>
+          </Stack> */}
         </div>
       </div>
     </>

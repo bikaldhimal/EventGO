@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
+import axios from "./../../axios";
 import { HiMenuAlt3, HiUserGroup } from "react-icons/hi";
 import { SiEventbrite } from "react-icons/si";
 import { FaUserAlt } from "react-icons/fa";
@@ -17,6 +18,7 @@ const ActorNav = () => {
     { name: "logout", link: "/login", icon: RiLogoutCircleLine, margin: true },
   ];
   const [open, setOpen] = React.useState(true);
+
   return (
     <>
       <section className="flex gap-3 z-50">

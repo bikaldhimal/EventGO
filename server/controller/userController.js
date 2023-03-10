@@ -2,6 +2,7 @@ const verifyToken = require("./../middleware/verifyToken");
 const User = require("./../model/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 require("dotenv").config();
 
 // sign Up controller
@@ -97,7 +98,41 @@ exports.login = async (req, res) => {
     res.status(200).json({
       token,
       isActive: true,
+      name: user.name,
+      address: user.address,
+      description: user.description,
       role: user.role,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { id, name, address, description, role, password } = req.body;
+    // const image = req.file.filename;
+
+    const user = await User.findByIdAndUpdate(
+      id,
+      {
+        name,
+        address,
+        description,
+        role,
+        password,
+        // image,
+      },
+      {
+        new: true,
+      }
+    );
+    res.status(200).json({
+      status: 200,
+      success: "User Updated Successfully",
+      user: user,
     });
   } catch (err) {
     res.status(500).json({
@@ -152,14 +187,30 @@ exports.updateUser = [
   verifyToken,
   async (req, res) => {
     try {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
+      const id = req.params.id;
+      const { name, address, description } = req.body;
+      console.log(req.file);
+      let image = req.file.filename;
+      console.log(image);
+      console.log(req.body);
+      const user = await User.findByIdAndUpdate(
+        id,
+        { name, address, description },
+        { new: true }
+      );
+
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+
+      const imageUrl = "http://localhost:5051/";
+
       res.status(200).json(user);
     } catch (err) {
-      res.status(500).json({
-        error: err.message,
-      });
+      console.log(err.message),
+        res.status(500).json({
+          error: err.message,
+        });
     }
   },
 ];

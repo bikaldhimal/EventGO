@@ -9,17 +9,20 @@ const ViewEvent = () => {
     axios
       .get("/event/show")
       .then((response) => {
-        console.log(response.data);
         setEvents(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
+  // Count the number of events
+  const eventCount = events.length;
+
   return (
     <>
       <p className="text-sm font-medium mb-3 inline-flex justify-start w-full">
-        Event Count: 15
+        Event Count: {eventCount}
       </p>
       <div className="container mx-auto h-[46rem] overflow-hidden overflow-y-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -32,7 +35,7 @@ const ViewEvent = () => {
                 <img
                   src={event.image}
                   alt="event"
-                  className="object-cover w-full h-full group-hover:grayscale group-hover:scale-110 duration-200 top-0 right-0 bottom-0 left-0"
+                  className="object-cover w-full h-full scale-105 group-hover:grayscale group-hover:scale-110 duration-200 top-0 right-0 bottom-0 left-0"
                 />
                 <div className="flex absolute justify-center bottom-0 w-full h-10 group-hover:h-28 p-1 bg-gray-700/40 duration-200">
                   <h4 className="absolute flex justify-center items-center bg-blend-multiply text-white group-hover:text-2xl duration-200">

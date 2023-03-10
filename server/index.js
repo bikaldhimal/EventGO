@@ -2,21 +2,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const multer = require("multer");
 const cors = require("cors");
 const passport = require("passport");
 const isLoggedIn = require("./middleware/isLoggedIn");
-require("./googleAuth");
+require("dotenv").config();
 const app = express();
-const verifyToken = require("./middleware/verifyToken");
 
 const corsOptions = {
-  origin: "http://localhost:5175",
+  origin: "http://127.0.0.1:5173",
   credentials: true,
 };
 
 app.use(cors(corsOptions));
 
+var userProfile;
+console.log(process.env.clientID);
 // For Google Authentication
 app.use(
   session({
@@ -32,76 +32,80 @@ app.use(express.static(__dirname + "/uploads/"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Caling the routes
 const userRoutes = require("./routes/userRoute");
-app.use("/api/user", userRoutes);
-
 const adminRoutes = require("./routes/adminRoute");
-app.use("/api/admin", adminRoutes);
-
 const eventRoute = require("./routes/eventRoute");
+const userModel = require("./model/userModel");
+
+// Initializing the routes
+app.use("/api/admin", adminRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/event", eventRoute);
 
-// File Upload (Image Upload)
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/uploads/images/profiles");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  },
+// Signin with Google
+passport.serializeUser(function (user, cb) {
+  cb(null, user);
 });
 
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  limits: { fileSize: 1024 * 1024 * 5 }, // 5 MB
+passport.deserializeUser(function (obj, cb) {
+  cb(null, obj);
 });
 
-app.post("/api/upload", verifyToken, upload.single("image"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send("No file was uploaded.");
-  }
-  res.status(200).send(req.file.path);
-});
-// File Upload (Image Upload) End
+/*  Google AUTH  */
 
-// Sign in with google
-app.get("/api/google", (req, res) => {
-  res.send(`<a href="/auth/google">Sign In with Google</a>`);
-});
+var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.clientID,
+      clientSecret: process.env.clientSecret,
+      callbackURL: "http://localhost:5051/auth/google/callback",
+    },
+    function (accessToken, refreshToken, profile, done) {
+      userProfile = profile;
+      return done(null, userProfile);
+    }
+  )
+);
 
 app.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["email", "profile"] })
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 app.get(
-  "/google/callback",
+  "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/api/protected",
-    failureRedirect: "/auth/failure",
-  })
+    failureRedirect: "http://127.0.0.1:5173/login",
+  }),
+  async function (req, res) {
+    const findUserByEmail = await userModel.findOne({
+      email: userProfile.emails[0].value,
+    });
+    let token;
+    if (findUserByEmail) {
+      token = findUserByEmail.id;
+    } else {
+      const user = await userModel.create({
+        name: userProfile.displayName,
+        email: userProfile.emails[0].value,
+        password: userProfile.id,
+        isActive: true,
+      });
+      token = user.id;
+    }
+    // res.header("Access-Control-Allow-Credentials", true);
+
+    // Successful authentication, redirect success.
+    res.redirect("http://127.0.0.1:5173/google/" + token);
+  }
 );
+// Signin with Google End
 
-app.get("/auth/failure", (req, res) => {
-  res.send("Something went wrong!");
-});
-
-app.get("/api/protected", isLoggedIn, (req, res) => {
-  res.send("Hello");
-});
-// Sign in with Google End
-
-mongoose.set("strictQuery", true);
 // MondoDB Connection
+mongoose.set("strictQuery", true);
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -110,7 +114,7 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
   console.log("Connected to EventGO Database");
-  app.listen(process.env.PORT || 5051, function () {
+  app.listen(5051, function () {
     console.log(
       `Express server listening on port ${process.env.PORT}`,
       this.address.MONGODB_URI || "localhost",

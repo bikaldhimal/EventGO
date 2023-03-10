@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
 
 const ManagerAppBar = () => {
+  const name = localStorage.getItem("name");
+  const address = localStorage.getItem("address");
+  const role = localStorage.getItem("role");
   return (
     <>
       <div className="">
@@ -20,14 +23,12 @@ const ManagerAppBar = () => {
             </Link>
             <div className="flex flex-col text-title py-2">
               <h4 className="font-normal text-[16px] font-serif leading-5">
-                Kate Winslet <br />
+                {name} <br />
                 <span className="text-xs font-light font-serif">
-                  Manager
+                  {role}
                 </span>{" "}
                 <br />
-                <span className="text-xs font-light font-serif">
-                  Durbar Marg, Kathmandu
-                </span>
+                <span className="text-xs font-light font-serif">{address}</span>
               </h4>
             </div>
           </div>

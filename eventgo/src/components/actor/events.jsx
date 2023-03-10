@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Link, Outlet } from "react-router-dom";
 import axios from "./../../axios";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
   useEffect(() => {
-    console.log("first");
     axios
       .get("/event/show")
       .then((response) => {
@@ -47,17 +47,17 @@ const Events = () => {
           {events.map((event) => (
             <div
               key={event._id}
-              className="flex flex-col relative group bg-slate-50 hover:bg-slate-100 drop-shadow-md hover:drop-shadow-xl hover:z-50 rounded-md justify-between items-center text-center w-52 h-64 hover:scale-105 duration-300 overflow-hidden"
+              className="flex flex-col relative group bg-gray-600/90 hover:bg-gray-600 text-white drop-shadow-md hover:drop-shadow-xl hover:z-50 rounded-md justify-between items-center text-center w-52 h-64 hover:scale-105 duration-300 overflow-hidden"
             >
               <div className="w-full h-[50%]">
                 <img
-                  src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
+                  src={event.image}
                   alt="event"
                   className="rounded-tl-md rounded-tr-md items-start object-cover w-full h-full hover:scale-105 duration-300"
                 />
               </div>
               <div className="flex flex-col gap-2 text-center justify-center items-center w-full h-[50%]">
-                <h3 className="text-sm text-[16px] text-title">
+                <h3 className="text-sm text-[16px] text-white">
                   {event.title}
                 </h3>
                 <p className="text-sm font-light text-[0.7rem]">
@@ -85,12 +85,13 @@ const Events = () => {
                   >
                     Request
                   </button>
-                  <button
-                    type="button"
+                  <Link
+                    to="/actor/event/ticket"
+                    // type="button"
                     className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                   >
                     B Ticket
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -98,6 +99,7 @@ const Events = () => {
 
           {/* card end */}
         </div>
+        <Outlet className="absolute place-self-center-center justify-self-center items-center" />
       </div>
     </>
   );

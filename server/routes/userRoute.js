@@ -1,12 +1,15 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
+const bodyParser = require("body-parser");
 
-var userController = require("./../controller/userController");
+router.use(bodyParser.json());
+
+const userController = require("./../controller/userController");
 
 router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.post("/upload/profile", userController.uploadProfile);
-router.post("/update/:id", userController.updateUser);
+router.patch("/update", userController.updateProfile);
 router.get("/logout", userController.logout);
 
 module.exports = router;

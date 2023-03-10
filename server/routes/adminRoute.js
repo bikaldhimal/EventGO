@@ -10,5 +10,6 @@ var adminController = require("./../controller/adminController");
 // router.post("/signup", adminController.signup);
 router.post("/login", adminController.login);
 router.get("/users", adminController.getUser);
+router.delete("/delete/users/:email", adminController.deleteUser);
 
 module.exports = router;

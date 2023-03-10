@@ -5,6 +5,7 @@ import Nepathya from "../../assets/images/Nepathya.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FcGoogle } from "react-icons/fc";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ const Signup = () => {
       if (password !== confirmPassword) {
         handleInvalidCredentials();
       } else {
+        setEmail(email.toLocaleLowerCase());
         axios
           .post("/user/signup", {
             name,
@@ -126,7 +128,7 @@ const Signup = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="text-[#777575] outline-0 border-[0.05rem]  border-light_gray focus:border-[#0C61FE] focus:border-[0.5] mb-5 text-[16px] p-2 rounded-md shadow-sm tracking-wide"
-            placeholder="Email *"
+            placeholder="Enter a valid email address *"
             required
             autoComplete="email"
           />
@@ -247,6 +249,19 @@ const Signup = () => {
             </Link>
           </p>
         </form>
+        {/* Sign in with Google */}
+        <div className="flex items-center justify-center mt-4">
+          <button
+            onClick={() => {
+              window.location.replace("http://localhost:5051/auth/google");
+            }}
+            className="flex items-center space-x-2"
+          >
+            <p className="text-title text-sm cursor-pointer">Sign in with</p>
+            <FcGoogle />
+          </button>
+        </div>
+        {/* Sign in with Google end */}
         <ToastContainer />
       </div>
     </section>

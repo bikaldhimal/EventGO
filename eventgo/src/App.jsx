@@ -17,6 +17,7 @@ import Follower from "./components/actor/follower";
 import Message from "./components/actor/message";
 import Chat from "./components/actor/chat";
 import ActorHelp from "./components/actor/actorHelp";
+import Ticket from "./components/actor/ticket";
 import ManagerNav from "./components/eventManager/managerNav";
 import ManagerEvent from "./components/eventManager/managerEvent";
 import ManagerMessage from "./components/eventManager/managerMessage";
@@ -33,6 +34,7 @@ import AdminDashboard from "./components/admin/adminDashboard";
 import AdminProfile from "./components/admin/adminProfile";
 import AdminFeedback from "./components/admin/adminFeedback";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
+import GoogleRole from "./components/authentication/googleRole";
 
 function App() {
   return (
@@ -49,6 +51,7 @@ function App() {
         {/* Authentication Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/google/:id" element={<GoogleRole />} />
         <Route path="/recovery" element={<Recovery />} />
         <Route path="/otp" element={<Otp />} />
         <Route path="/reset" element={<Reset />} />
@@ -56,14 +59,15 @@ function App() {
         <Route element={<ProtectedRoute />}>
           {/* Actor Routes */}
           <Route path="/actor/" element={<ActorNav />}>
-            <Route path="" element={<Events />} />
+            <Route path="" element={<Events />}>
+              <Route path="event/ticket" element={<Ticket />} />
+            </Route>
             <Route path="profile" element={<Profile />} />
             <Route path="follower" element={<Follower />} />
             <Route path="message" element={<Message />} />
             <Route path="chat" element={<Chat />} />
             <Route path="help" element={<ActorHelp />} />
           </Route>
-
           {/* Event Manager Routes */}
           <Route path="/manager/" element={<ManagerNav />}>
             <Route path="overview" element={<Overview />} />
@@ -78,8 +82,7 @@ function App() {
             <Route path="chat" element={<ManagerChat />} />
             <Route path="help" element={<ManagerHelp />} />
           </Route>
-
-          {/* Admin Routes */}
+          0{/* Admin Routes */}
           <Route path="/admin/" element={<AdminNav />}>
             <Route path="" element={<AdminDashboard />} />
             <Route path="profile" element={<AdminProfile />} />

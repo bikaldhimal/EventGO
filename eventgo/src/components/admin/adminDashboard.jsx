@@ -5,9 +5,10 @@ import { SiEventbrite, SiGoogleanalytics } from "react-icons/si";
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
+  const email = users.email;
   useEffect(() => {
     axios
-      .get("/admin/users")
+      .get("/admin/users", { email })
       .then((response) => {
         console.log(response.data);
         setUsers(response.data);
@@ -16,6 +17,20 @@ const AdminDashboard = () => {
         console.log(error);
       });
   }, []);
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    axios
+      .delete("/admin/delete/user/:email")
+      .then((response) => {
+        console.log(response.data);
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <div className="container mx-auto min-h-screen overflow-hidden overflow-y-auto bg-slate-50 p-5 rounded-md">
@@ -135,7 +150,12 @@ const AdminDashboard = () => {
                               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Edit
                               </button>
-                              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                              <button
+                                onClick={(e) => {
+                                  handleDelete(e);
+                                }}
+                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                              >
                                 Delete
                               </button>
                             </div>

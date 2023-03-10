@@ -128,3 +128,25 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+// Delete a user
+exports.deleteUser = async (req, res) => {
+  try {
+    const users = await User.deleteOne({ email: email }, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send(err.message);
+      } else {
+        console.log(`Deleted ${result.deletedCount} document(s)`);
+        res.status(200).send(`Deleted ${result.deletedCount} document(s)`);
+      }
+      // client.close();
+    });
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({
+      status: 500,
+      error: err.message,
+    });
+  }
+};

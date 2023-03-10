@@ -4,6 +4,10 @@ import { FaBell } from "react-icons/fa";
 import NepathyaProfile from "../../assets/images/NepathyaProfile.svg";
 
 const AppBar = () => {
+  const name = localStorage.getItem("name");
+  const address = localStorage.getItem("address");
+  const role = localStorage.getItem("role");
+
   return (
     <div className="flex justify-between items-center gap-3 w-full border-2 rounded-lg px-5 py-2 bg-gray-800 transparent mb-5">
       <div className="flex justify-between items-center gap-3">
@@ -19,11 +23,9 @@ const AppBar = () => {
         </Link>
         <div className="flex flex-col text-white py-2">
           <h4 className="font-normal text-[16px] font-serif leading-5">
-            Nepathya <br />
-            <span className="text-xs font-light font-serif">Artist</span> <br />
-            <span className="text-xs font-light font-serif">
-              Dharan, Sunsari
-            </span>
+            {name} <br />
+            <span className="text-xs font-light font-serif">{role}</span> <br />
+            <span className="text-xs font-light font-serif">{address}</span>
           </h4>
         </div>
       </div>

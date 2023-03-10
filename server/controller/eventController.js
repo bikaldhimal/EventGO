@@ -2,7 +2,6 @@ const Event = require("./../model/eventModel");
 
 // add event
 exports.addEvent = async (req, res) => {
-  console.log("hello");
   console.log("datafrontend", req.body, req.file);
   try {
     const {
