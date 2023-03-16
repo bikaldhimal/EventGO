@@ -79,7 +79,7 @@ const Recovery = () => {
           <div className="flex flex-col justify-between items-center gap-5 w-full">
             {/* profile image */}
             <img
-              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+              src="https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"
               alt="user image"
               className="w-28 h-28 rounded-full"
             />

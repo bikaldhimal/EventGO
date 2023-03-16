@@ -272,8 +272,7 @@ exports.forgotPassword = async (req, res, next) => {
 
   await user.save();
 
-  const message = `Forgot your password ? Enter the otp  \n
-  ${otp}. \n If you don't forget your password , please ignore this email! `;
+  const message = `Hello, ${user.name}, \nDid you Forgot your password ? \nEnter the otp code provided below: \n\n${otp} \nIf you don't forget your password , please ignore this email! \nBest regards, \nEventGO`;
 
   try {
     await sendEmail({

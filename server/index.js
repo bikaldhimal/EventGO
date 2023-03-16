@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const cors = require("cors");
 const passport = require("passport");
+const socket = require("socket.io");
 const isLoggedIn = require("./middleware/isLoggedIn");
 require("dotenv").config();
 const app = express();
@@ -111,7 +112,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function () {
+const server = db.once("open", function () {
   console.log("Connected to EventGO Database");
   app.listen(5051, function () {
     console.log(
@@ -122,3 +123,27 @@ db.once("open", function () {
     console.log(process.env.PORT);
   });
 });
+
+// Socket IO
+const io = socket(server, {
+  cors: {
+    origin: "http://127.0.0.1:5173",
+    credentials: true,
+  },
+});
+
+global.onlineUsers = new Map();
+io.on("connection", (socket) => {
+  global.chatSocket = socket;
+  socket.on("addUser", (id) => {
+    console.log("user added", id);
+    onlineUsers.set(id, socket.id);
+  });
+  socket.on("send-msg", (data) => {
+    const sendUserSocket = onlineUsers.get(data.to);
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit("msg-receive", data.message);
+    }
+  });
+});
+// Socket IO End

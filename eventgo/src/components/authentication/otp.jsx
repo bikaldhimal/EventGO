@@ -38,6 +38,16 @@ const Otp = () => {
     }
   };
 
+  const invalidOTP = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Invalid OTP!", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
   // Check OTP
   const handleOTP = (e) => {
     e.preventDefault();
@@ -50,10 +60,10 @@ const Otp = () => {
           otp,
         })
         .then((response) => {
-          if (response.status === 400) {
-            alert("Invalid OTP");
+          if (response.data.status === 400) {
+            invalidOTP();
           }
-          if (response.status === 200) {
+          if (response.data.status === 200) {
             navigate("/reset");
           }
           console.log(response);
@@ -75,8 +85,8 @@ const Otp = () => {
       })
       .then((response) => {
         handleSuccess();
-        if (response.status === 200) {
-          navigate("/otp");
+        if (response.data.status === 200) {
+          navigate("/reset");
         }
         console.log(response);
       })
@@ -108,17 +118,17 @@ const Otp = () => {
               placeholder="OTP"
               maxLength="6"
               onChange={(e) => setOTP(e.target.value)}
+              required
               className="text-center bg-white border-[0.1rem] hover:border-light_gray active:border-light_gray focus:border-light_gray mb-5 px-5 py-3 w-full rounded-lg text-title tracking-widest text-[14px]"
             />
-            <Link
-              to="/reset"
+            <button
               onClick={(e) => {
                 handleOTP(e);
               }}
               className="flex justify-center items-center w-full mb-5 px-10 py-3 bg-[#5B55FE] rounded-lg text-white hover:bg-[#FC5B62] font-medium "
             >
               Recover
-            </Link>
+            </button>
             <div className="text-gray_title text-[15px]">
               Can't get OTP?{" "}
               <button
