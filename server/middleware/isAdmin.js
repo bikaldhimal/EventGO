@@ -1,5 +1,7 @@
 function isAdmin(req, res, next) {
-  req.user ? next() : res.sendStatus(401);
+  req.user.role != "admin"
+    ? res.sendStatus(403).json({ message: "Forbidden" })
+    : next();
 }
 
 module.exports = isAdmin;

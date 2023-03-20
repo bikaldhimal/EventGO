@@ -1,33 +1,57 @@
 import React, { useState, useEffect } from "react";
 import axios from "./../../axios";
-// import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SiEventbrite, SiGoogleanalytics } from "react-icons/si";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminDashboard = () => {
+  let navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const email = users.email;
   useEffect(() => {
     axios
       .get("/admin/users", { email })
       .then((response) => {
-        console.log(response.data);
         setUsers(response.data);
+        navigate("/admin");
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  const handleDelete = (e) => {
-    e.preventDefault();
+  const handleSuccess = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.success("User deleted successfully", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty",
+      });
+    }
+  };
+
+  const handleError = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Server error", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleDelete = (user) => {
+    console.log(user);
     axios
-      .delete("/admin/delete/user/:email")
+      .delete(`/admin/users/${user}`)
       .then((response) => {
-        console.log(response.data);
-        setUsers(response.data);
+        console.log(response);
+        handleSuccess();
       })
       .catch((error) => {
         console.log(error);
+        handleError();
       });
   };
 
@@ -50,9 +74,11 @@ const AdminDashboard = () => {
             </div>
             <div className="flex flex-col justify-end w-full items-end pl-48 overflow-hidden pr-4 pt-4 gap-1">
               <p className="text-sm font-light text-end tracking-wide">
-                Total Events
+                Total Users
               </p>
-              <p className="text-xl font-medium text-end tracking-wide">2500</p>
+              <p className="text-xl font-medium text-end tracking-wide">
+                {users.length}
+              </p>
             </div>
             <hr className="mt-5" />
             <div className="flex justify-start items-center py-2 pl-1">
@@ -151,8 +177,8 @@ const AdminDashboard = () => {
                                 Edit
                               </button>
                               <button
-                                onClick={(e) => {
-                                  handleDelete(e);
+                                onClick={() => {
+                                  handleDelete(user._id);
                                 }}
                                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                               >
@@ -171,6 +197,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
