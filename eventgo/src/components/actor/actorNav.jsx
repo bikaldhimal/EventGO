@@ -17,7 +17,18 @@ const ActorNav = () => {
     { name: "help", link: "/actor/help", icon: MdOutlineHelp },
     { name: "logout", link: "/login", icon: RiLogoutCircleLine, margin: true },
   ];
+
   const [open, setOpen] = React.useState(true);
+
+  const handleLogout = async (e) => {
+    try {
+      await axios.get("/user/logout");
+      localStorage.clear();
+      console.clear();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -39,6 +50,7 @@ const ActorNav = () => {
               <Link
                 to={menu?.link}
                 key={i}
+                onClick={menu?.name === "logout" ? handleLogout() : undefined}
                 className={` ${
                   menu?.margin && "mt-10 hover:bg-red-400/30"
                 } group flex items-center gap-3.5 text-sm font-medium p-2 hover:bg-gray-800 rounded-md`}

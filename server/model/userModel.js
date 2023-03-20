@@ -23,17 +23,11 @@ var UserSchema = new Schema(
       required: true,
       unique: true,
       lowercase: true,
-      // match: [
-      //   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      //   "Please fill a valid email address",
-      // ],
     },
     password: {
       type: String,
       required: true,
       minlength: 8,
-      // maxlength: 20,
-      // match: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,1024}$/],
     },
     description: {
       type: String,

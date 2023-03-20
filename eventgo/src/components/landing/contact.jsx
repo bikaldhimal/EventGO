@@ -6,6 +6,7 @@ import Commentor3 from "../../assets/images/Commentor3.svg";
 import Commentor4 from "../../assets/images/Commentor4.svg";
 import Commentor5 from "../../assets/images/Commentor5.svg";
 import formIcon from "../../assets/images/formIcon.svg";
+import khalti from "../../assets/images/khalti.svg";
 import { FiArrowRight } from "react-icons/fi";
 import AutoDateTime from "./autoDateTime";
 
@@ -137,15 +138,24 @@ const Contact = () => {
               <p className="text-light_gray text-xs select-none">
                 Get started now try our product
               </p>
-              <div className="flex justify-between items-center p-2 sm:w-full md:max-w-[40rem] border-[0.1rem] lg:w-96 border-gray-600 hover:border-white focus:border-white active:border-white accent-white rounded-[500px]">
-                <input
+              <div className="flex justify-between items-center sm:w-full md:max-w-[40rem] lg:w-96">
+                <div className="w-full flex flex-col gap-2 items-center lg:items-start">
+                  <h3 className="text-md text-white">Our Payment Partner: </h3>
+                  <img
+                    src={khalti}
+                    alt="khalti"
+                    title="payment support"
+                    className="h-8"
+                  />
+                </div>
+                {/* <input
                   type="email"
                   placeholder="Enter your email here"
                   className="bg-transparent text-white w-64 text-sm outline-0 px-2 py-1 lowercase"
                 />
                 <div className="flex justify-center items-center bg-greenCustom w-8 h-8 rounded-full text-white hover:bg-orange-500">
                   <FiArrowRight />
-                </div>
+                </div> */}
               </div>
             </div>
             {/* left end */}

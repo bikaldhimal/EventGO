@@ -98,6 +98,7 @@ exports.login = async (req, res) => {
     user.isActive = true;
     await user.save();
     res.status(200).json({
+      email: user.email,
       token,
       isActive: true,
       name: user.name,
