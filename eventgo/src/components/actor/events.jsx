@@ -13,8 +13,7 @@ const Events = () => {
   const [events, setEvents] = useState([]);
   const [payments, setPayments] = useState([]);
   const [showQRCode, setShowQRCode] = useState(false);
-  const qrCodeRef = useRef(null);
-  const [canvasReady, setCanvasReady] = useState(false);
+  const qrRef = useRef(null);
 
   useEffect(() => {
     axios
@@ -39,27 +38,13 @@ const Events = () => {
   }, []);
 
   // Make QR Code Downloadable
-  useEffect(() => {
-    // set the canvasReady state to true when the canvas element is created
-    if (qrCodeRef.current && !canvasReady) {
-      setCanvasReady(true);
-    }
-  }, [qrCodeRef, canvasReady]);
-
   const handleDownload = () => {
-    if (canvasReady) {
-      // get the data URL of the QR code image from the canvas element
-      const canvas = qrCodeRef.current.querySelector("canvas");
-      const dataUrl = canvas.toDataURL("image/png");
-
-      // create a temporary link element and set its href attribute to the data URL of the QR code image
-      const downloadLink = document.createElement("a");
-      downloadLink.href = dataUrl;
-      downloadLink.download = "qr-code.png";
-
-      // simulate a click event to trigger the download
-      downloadLink.click();
-    }
+    const canvas = qrRef.current.querySelector("canvas");
+    const dataURL = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "qrcode.png";
+    link.click();
   };
 
   // Khalti checkout
@@ -123,7 +108,10 @@ const Events = () => {
 
       {/* QR Code for Payment */}
       {payments.length !== 0 ? (
-        <div className="w-fit flex flex-col gap-3 p-5 my-10 justify-center items-center border-2 border-gray-400">
+        <div
+          ref={qrRef}
+          className="w-fit flex flex-col gap-3 p-5 my-10 justify-center items-center border-2 border-gray-400"
+        >
           <button onClick={() => setShowQRCode(!showQRCode)}>
             Show QR Code
           </button>
