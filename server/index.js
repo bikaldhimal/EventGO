@@ -4,20 +4,48 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const cors = require("cors");
 const passport = require("passport");
-const socket = require("socket.io");
+// const socket = require("socket.io");
 const isLoggedIn = require("./middleware/isLoggedIn");
+const http = require("http");
+const { Server } = require("socket.io");
+const path = require("path");
 require("dotenv").config();
 const app = express();
 
+// server -> http
+// const server = http.createServer(app);
+
 const corsOptions = {
-  origin: "http://127.0.0.1:5173",
   credentials: true,
+  origin: "http://127.0.0.1:5173",
+  "Access-Control-Allow-Origin": "*",
+  preflightContinue: false,
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
+// // socket io -> also setups cors
+// const io = new Server(server, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//   },
+// });
+
+// // socket io connection
+// io.on("connection", (socket) => {
+//   console.log(`connected ${socket.id}`);
+//   socket.on("disconnect", () => {
+//     console.log("disconnected");
+//   });
+//   socket.on("send-message", (data) => {
+//     console.log(data);
+//     // io.emit('new-message', data);
+//   });
+// });
 
 var userProfile;
-console.log(process.env.clientID);
 // For Google Authentication
 app.use(
   session({
@@ -38,23 +66,27 @@ const userRoutes = require("./routes/userRoute");
 const adminRoutes = require("./routes/adminRoute");
 const eventRoute = require("./routes/eventRoute");
 const userModel = require("./model/userModel");
+const todoRoute = require("./routes/todoRoute");
+const messageRoute = require("./routes/messageRoute");
+const paymentRoute = require("./routes/paymentRoute");
 
 // Initializing the routes
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/event", eventRoute);
+app.use("/api/todos", todoRoute);
+app.use("/api/message", messageRoute);
+app.use("/api/payment", paymentRoute);
 
 // Signin with Google
 passport.serializeUser(function (user, cb) {
   cb(null, user);
 });
-
 passport.deserializeUser(function (obj, cb) {
   cb(null, obj);
 });
 
 /*  Google AUTH  */
-
 var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
 passport.use(
@@ -120,30 +152,5 @@ const server = db.once("open", function () {
       this.address.MONGODB_URI || "localhost",
       app.settings.env
     );
-    console.log(process.env.PORT);
   });
 });
-
-// Socket IO
-const io = socket(server, {
-  cors: {
-    origin: "http://127.0.0.1:5173",
-    credentials: true,
-  },
-});
-
-global.onlineUsers = new Map();
-io.on("connection", (socket) => {
-  global.chatSocket = socket;
-  socket.on("addUser", (id) => {
-    console.log("user added", id);
-    onlineUsers.set(id, socket.id);
-  });
-  socket.on("send-msg", (data) => {
-    const sendUserSocket = onlineUsers.get(data.to);
-    if (sendUserSocket) {
-      socket.to(sendUserSocket).emit("msg-receive", data.message);
-    }
-  });
-});
-// Socket IO End

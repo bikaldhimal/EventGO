@@ -23,8 +23,8 @@ const ActorNav = () => {
   const handleLogout = async (e) => {
     try {
       await axios.get("/user/logout");
-      localStorage.clear();
-      console.clear();
+      // localStorage.clear();
+      // console.clear();
     } catch (error) {
       console.log(error);
     }

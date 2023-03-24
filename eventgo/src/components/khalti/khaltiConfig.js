@@ -1,5 +1,5 @@
 import khaltiKey from "./khaltiKey";
-import axios from "axios";
+import axios from "./../../axios";
 
 let config = {
   // replace this key with yours
@@ -10,7 +10,7 @@ let config = {
   eventHandler: {
     onSuccess(payload) {
       // hit merchant api for initiating verfication
-      console.log(payload);
+
       let data = {
         token: payload.token,
         amount: payload.amount,
@@ -23,14 +23,24 @@ let config = {
       };
 
       axios
-        .post("https://khalti.com/api/v2/payment/verify/", data, config)
+        .post("/payment/add", {
+          idx: payload.idx,
+          amount: payload.amount,
+          mobile: payload.mobile,
+          productIdentity: payload.product_identity,
+          productName: payload.product_name,
+          token: payload.token,
+          widgetId: payload.widget_id,
+        })
         .then((response) => {
-          console.log(response.data);
+          console.log("payment details added successfully");
+          console.log(response.data.paymentDetails);
         })
         .catch((error) => {
           console.log(error);
         });
     },
+
     // onError handler is optional
     onError(error) {
       // handle errors

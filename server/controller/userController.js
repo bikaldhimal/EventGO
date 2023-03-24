@@ -98,6 +98,7 @@ exports.login = async (req, res) => {
     user.isActive = true;
     await user.save();
     res.status(200).json({
+      id: user._id,
       email: user.email,
       token,
       isActive: true,
@@ -349,4 +350,14 @@ exports.resetPassword = async (req, res, next) => {
     status: 200,
     message: "Reset Successfully",
   });
+};
+
+// Get all artists
+exports.getArtists = async (req, res) => {
+  try {
+    const artists = await User.find({ role: "actor" });
+    res.status(200).json(artists);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 };

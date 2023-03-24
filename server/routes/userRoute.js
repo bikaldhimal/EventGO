@@ -14,5 +14,6 @@ router.post("/forgot-password", userController.forgotPassword);
 router.post("/check-otp", userController.checkOTP);
 router.post("/reset-password", userController.resetPassword);
 router.get("/logout", userController.logout);
+router.get("/artists", userController.getArtists);
 
 module.exports = router;

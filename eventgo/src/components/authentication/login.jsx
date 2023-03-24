@@ -57,6 +57,7 @@ const Login = () => {
       } else {
         if (response.data.isActive) {
           setIsActive(true);
+          localStorage.setItem("id", response.data.id);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("name", response.data.name);
           localStorage.setItem("address", response.data.address);

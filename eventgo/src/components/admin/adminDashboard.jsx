@@ -41,12 +41,17 @@ const AdminDashboard = () => {
     }
   };
 
+  // const refreshPage = () => {
+  //   navigate("/admin");
+  // };
+
   const handleDelete = (user) => {
     console.log(user);
     axios
       .delete(`/admin/users/${user}`)
       .then((response) => {
         console.log(response);
+        // refreshPage();
         handleSuccess();
       })
       .catch((error) => {
@@ -174,7 +179,7 @@ const AdminDashboard = () => {
                           <div className="flex items-center">
                             <div className="mr-4 xl:space-x-2 space-y-2">
                               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Edit
+                                Suspend
                               </button>
                               <button
                                 onClick={() => {
@@ -189,7 +194,6 @@ const AdminDashboard = () => {
                         </td>
                       </tr>
                     ))}
-                    {/* <!-- Add more user rows as needed --> */}
                   </tbody>
                 </table>
               </div>
