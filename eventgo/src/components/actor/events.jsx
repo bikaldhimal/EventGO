@@ -10,11 +10,13 @@ import { Card, Button, CardActionArea, CardActions } from "@mui/material";
 import QRCode from "qrcode.react";
 
 const Events = () => {
+  const userId = localStorage.getItem("id");
   const [events, setEvents] = useState([]);
   const [payments, setPayments] = useState([]);
   const [showQRCode, setShowQRCode] = useState(false);
   const qrRef = useRef(null);
 
+  // Get events
   useEffect(() => {
     axios
       .get("/event/show")
@@ -26,16 +28,17 @@ const Events = () => {
       });
   }, []);
 
+  // Get payment Details
   useEffect(() => {
     axios
-      .get("/payment/get")
+      .get(`/payment/get/${userId}`)
       .then((response) => {
         setPayments(response.data);
       })
       .catch((error) => {
         console.log(error.message);
       });
-  }, []);
+  }, [showQRCode]);
 
   // Make QR Code Downloadable
   const handleDownload = () => {
@@ -97,7 +100,11 @@ const Events = () => {
               <Button
                 size="small"
                 color="secondary"
-                onClick={() => checkout.show({ amount: event.fee * 100 })}
+                onClick={() => {
+                  localStorage.setItem("eventId", event._id);
+                  localStorage.setItem("eventTitle", event.title);
+                  checkout.show({ amount: event.fee * 100 });
+                }}
               >
                 Buy Ticket
               </Button>
@@ -122,13 +129,12 @@ const Events = () => {
                 value={JSON.stringify(
                   payments.reduce((obj, item) => {
                     obj[item.idx] = {
+                      eventTitle: item.eventTitle,
                       amount: item.amount / 100,
                       mobile: item.mobile,
-                      product_identity: item.product_identity,
-                      prodect_name: item.prodect_name,
                       token: item.token,
-                      widget_id: item.widget_id,
                       status: "verified",
+                      approved_by: "EventGO",
                     };
                     return obj;
                   }, {})

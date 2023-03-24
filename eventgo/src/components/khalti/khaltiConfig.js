@@ -22,6 +22,10 @@ let config = {
         },
       };
 
+      const userId = localStorage.getItem("id");
+      const eventId = localStorage.getItem("eventId");
+      const eventTitle = localStorage.getItem("eventTitle");
+
       axios
         .post("/payment/add", {
           idx: payload.idx,
@@ -31,6 +35,9 @@ let config = {
           productName: payload.product_name,
           token: payload.token,
           widgetId: payload.widget_id,
+          eventId: eventId,
+          eventTitle: eventTitle,
+          userId: userId,
         })
         .then((response) => {
           console.log("payment details added successfully");

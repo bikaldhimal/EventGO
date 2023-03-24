@@ -1,4 +1,5 @@
 const Payment = require("./../model/paymentModel");
+const Event = require("./../model/eventModel");
 
 // Add Payment Details
 exports.addPaymentDetails = async (req, res) => {
@@ -11,6 +12,9 @@ exports.addPaymentDetails = async (req, res) => {
       productName,
       token,
       widgetId,
+      eventId,
+      eventTitle,
+      userId,
     } = req.body;
 
     // checking for emplty fields
@@ -49,10 +53,25 @@ exports.addPaymentDetails = async (req, res) => {
         error: "widget_id is required",
         status: 404,
       });
+    if (!eventId)
+      return res.status(400).json({
+        error: "eventId is required",
+        status: 404,
+      });
+    if (!eventTitle)
+      return res.status(400).json({
+        error: "eventTitle is required",
+        status: 404,
+      });
+    if (!userId)
+      return res.status(400).json({
+        error: "userId is required",
+        status: 404,
+      });
 
     // checking if the same payment alresdy exists in database
     const payment = await Payment.findOne({
-      widgetId,
+      idx,
     });
     if (payment) {
       return res.status(400).json({
@@ -70,6 +89,9 @@ exports.addPaymentDetails = async (req, res) => {
       productName,
       token,
       widgetId,
+      eventId,
+      eventTitle,
+      userId,
     });
 
     await newPayment.save();
@@ -87,6 +109,12 @@ exports.addPaymentDetails = async (req, res) => {
 };
 
 exports.getPaymentDetails = async (req, res) => {
-  const paymentDetails = await Payment.find();
-  res.status(200).json(paymentDetails);
+  try {
+    const userId = req.params.userId;
+    const paymentDetails = await Payment.find({ userId: userId });
+    res.status(200).json(paymentDetails);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
 };

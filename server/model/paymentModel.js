@@ -30,6 +30,20 @@ var PaymentSchema = new Schema(
     widgetId: {
       type: String,
     },
+    eventId: {
+      type: Schema.Types.ObjectId,
+      ref: "Event",
+      required: true,
+    },
+    eventTitle: {
+      type: String,
+      required: true,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );
