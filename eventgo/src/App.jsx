@@ -35,6 +35,15 @@ import AdminProfile from "./components/admin/adminProfile";
 import AdminFeedback from "./components/admin/adminFeedback";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import GoogleRole from "./components/authentication/googleRole";
+import UserNav from "./components/user/userNav";
+import UserEvents from "./components/user/userEvents";
+import UserTicket from "./components/user/userTicket";
+import UserProfile from "./components/user/userProfile";
+import UserFollower from "./components/user/userFollower";
+import UserMessage from "./components/user/userMessage";
+import UserChat from "./components/user/userChat";
+import UserHelp from "./components/user/userHelp";
+import QrCode from "./components/actor/qrCode";
 
 function App() {
   return (
@@ -57,7 +66,18 @@ function App() {
         <Route path="/reset" element={<Reset />} />
 
         <Route element={<ProtectedRoute />}>
-          {/* Actor Routes */}
+          {/* User Routes */}
+          <Route path="/user/" element={<UserNav />}>
+            <Route path="" element={<UserEvents />}>
+              <Route path="event/ticket" element={<UserTicket />} />
+            </Route>
+            <Route path="profile" element={<UserProfile />} />
+            <Route path="follower" element={<UserFollower />} />
+            <Route path="message" element={<UserMessage />} />
+            <Route path="chat" element={<UserChat />} />
+            <Route path="help" element={<UserHelp />} />
+          </Route>
+          {/* Artist Routes */}
           <Route path="/actor/" element={<ActorNav />}>
             <Route path="" element={<Events />}>
               <Route path="event/ticket" element={<Ticket />} />
@@ -66,6 +86,7 @@ function App() {
             <Route path="follower" element={<Follower />} />
             <Route path="message" element={<Message />} />
             <Route path="chat" element={<Chat />} />
+            <Route path="ticket" element={<QrCode />} />
             <Route path="help" element={<ActorHelp />} />
           </Route>
           {/* Event Manager Routes */}

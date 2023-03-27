@@ -9,6 +9,8 @@ const AdminDashboard = () => {
   let navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const email = users.email;
+  const [flag, setFlag] = useState(false);
+
   useEffect(() => {
     axios
       .get("/admin/users", { email })
@@ -19,7 +21,7 @@ const AdminDashboard = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [flag]);
 
   const handleSuccess = () => {
     if (!toast.isActive("empty-fields")) {
@@ -45,19 +47,27 @@ const AdminDashboard = () => {
   //   navigate("/admin");
   // };
 
-  const handleDelete = (user) => {
-    console.log(user);
-    axios
-      .delete(`/admin/users/${user}`)
-      .then((response) => {
-        console.log(response);
-        // refreshPage();
-        handleSuccess();
-      })
-      .catch((error) => {
-        console.log(error);
-        handleError();
-      });
+  const handleDelete = (user, name) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete the user: ${name}?`
+    );
+    if (confirmDelete) {
+      axios
+        .delete(`/admin/users/${user}`)
+        .then((response) => {
+          if (flag === false) {
+            setFlag(true);
+          } else {
+            setFlag(false);
+          }
+          handleSuccess();
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          handleError();
+        });
+    }
   };
 
   return (
@@ -183,7 +193,7 @@ const AdminDashboard = () => {
                               </button>
                               <button
                                 onClick={() => {
-                                  handleDelete(user._id);
+                                  handleDelete(user._id, user.name);
                                 }}
                                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                               >

@@ -6,21 +6,21 @@ var Schema = mongoose.Schema;
 var EventSchema = new Schema({
   title: {
     type: String,
-    minlength: [4, "title must be at least 4 characters long"],
-    maxlength: [100, "title must be at least 4 to 100 characters long"],
+    minlength: [3, "title must be at least 3 characters long"],
+    maxlength: [100, "title must be at least 3 to 100 characters long"],
     required: true,
   },
   venue: {
     type: String,
     required: true,
-    minlength: [4, "venue must be at least 4 characters long"],
-    maxlength: [100, "venue must be at least 4 to 100 characters long"],
+    minlength: [3, "venue must be at least 3 characters long"],
+    maxlength: [100, "venue must be at least 3 to 100 characters long"],
   },
   category: {
     type: String,
     required: true,
     minlength: [3, "category must be at least 3 characters long"],
-    maxlength: [20, "category must be at least 3 to 20 characters long"],
+    maxlength: [50, "category must be at least 3 to 50 characters long"],
   },
   date: {
     type: Date,
@@ -53,6 +53,11 @@ var EventSchema = new Schema({
     type: String,
     minlength: [10, "description must be at least 10 characters long"],
     maxlength: [255, "category must be at least 10 to 255 characters long"],
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
 });
 

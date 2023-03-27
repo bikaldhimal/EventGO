@@ -6,17 +6,15 @@ import { SiEventbrite } from "react-icons/si";
 import { FaUserAlt } from "react-icons/fa";
 import { MdMessage, MdOutlineHelp } from "react-icons/md";
 import { RiLogoutCircleLine } from "react-icons/ri";
-import { MdQrCodeScanner } from "react-icons/md";
-import AppBar from "./appBar";
+import UserAppBar from "./userAppBar";
 
-const ActorNav = () => {
+const UserNav = () => {
   const menus = [
-    { name: "events", link: "/actor", icon: SiEventbrite },
-    { name: "profile", link: "/actor/profile", icon: FaUserAlt },
-    { name: "followers", link: "/actor/follower", icon: HiUserGroup },
-    { name: "messages", link: "/actor/message", icon: MdMessage },
-    { name: "tickets", link: "/actor/ticket", icon: MdQrCodeScanner },
-    { name: "help", link: "/actor/help", icon: MdOutlineHelp },
+    { name: "event", link: "/user", icon: SiEventbrite },
+    { name: "profile", link: "/user/profile", icon: FaUserAlt },
+    { name: "follower", link: "/user/follower", icon: HiUserGroup },
+    { name: "message", link: "/user/message", icon: MdMessage },
+    { name: "help", link: "/user/help", icon: MdOutlineHelp },
     { name: "logout", link: "/login", icon: RiLogoutCircleLine, margin: true },
   ];
 
@@ -80,7 +78,7 @@ const ActorNav = () => {
           </div>
         </div>
         <div className="m-3 text-xl text-gray-900 font-semibold static w-[100vw]">
-          <AppBar />
+          <UserAppBar />
           <Outlet />
         </div>
       </section>
@@ -88,4 +86,4 @@ const ActorNav = () => {
   );
 };
 
-export default ActorNav;
+export default UserNav;

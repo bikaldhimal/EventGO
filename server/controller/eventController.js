@@ -14,6 +14,7 @@ exports.addEvent = async (req, res) => {
       phonenumber,
       email,
       description,
+      userId,
     } = req.body;
     console.log(req.file);
     let image = req.file.filename;
@@ -62,14 +63,18 @@ exports.addEvent = async (req, res) => {
         status: 404,
       });
     }
+    if (!userId) {
+      return res.status(400).json({
+        error: "userId is required",
+        status: 404,
+      });
+    }
     const imageUrl = "http://localhost:5051/";
     // checking if event already exists in database
     const event = await Event.findOne({
+      userId,
       title,
       venue,
-      image,
-      email,
-      description,
     });
     if (event) {
       return res.status(400).json({
@@ -89,6 +94,7 @@ exports.addEvent = async (req, res) => {
       image: imageUrl + req.file.filename,
       email,
       description,
+      userId,
     });
     await newEvent.save();
     console.log(newEvent);
@@ -111,27 +117,42 @@ exports.getAllEvents = async (req, res) => {
     res.status(500).send(err);
     error: err.message;
   }
+};
 
-  // update event
-  exports.updateEvent = async (req, res) => {
-    try {
-      const event = await Event.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
-      res.status(200).json(event);
-    } catch (err) {
-      res.status(500).send(err);
-      error: err.message;
-    }
-  };
+// get events based on event manager
+exports.getSpecificEvents = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const events = await Event.find({ userId: userId });
+    res.status(200).json(events);
+  } catch (err) {
+    res.status(500).send(err);
+    error: err.message;
+  }
+};
 
-  // delete event
-  exports.deleteEvent = async (req, res) => {
-    try {
-      const event = await Event.findByIdAndDelete(req.params.id);
-      res.status(200).json(event);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  };
+// update event
+exports.updateEvent = async (req, res) => {
+  try {
+    const event = await Event.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.status(200).json(event);
+  } catch (err) {
+    res.status(500).send(err);
+    error: err.message;
+  }
+};
+
+// delete event
+exports.deleteEvent = async (req, res) => {
+  try {
+    const event = await Event.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      success: true,
+      message: `Event with ${event._id} id deleted successfully`,
+    });
+  } catch (err) {
+    res.status(500).send(err.message || { message: "Error with server" });
+  }
 };

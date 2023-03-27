@@ -78,6 +78,7 @@ const AddEvent = () => {
       formData.append("phonenumber", phonenumber);
       formData.append("description", description);
       formData.append("email", email);
+      formData.append("userId", localStorage.getItem("id"));
 
       axios
         .post("/event/add", formData)

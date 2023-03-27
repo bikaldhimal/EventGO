@@ -4,17 +4,42 @@ import { AiFillEdit } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 const ViewEvent = () => {
+  const userId = localStorage.getItem("id");
   const [events, setEvents] = useState([]);
+  const [flag, setFlag] = useState(false);
+
   useEffect(() => {
     axios
-      .get("/event/show")
+      .get(`/event/${userId}`)
       .then((response) => {
         setEvents(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [flag]);
+
+  // Delete event
+  const deleteEvent = (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
+    if (confirmDelete) {
+      axios
+        .delete(`/event/${id}`)
+        .then((response) => {
+          if (flag === true) {
+            setFlag(false);
+          } else {
+            setFlag(true);
+          }
+          alert(response.data.message);
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+  };
 
   // Count the number of events
   const eventCount = events.length;
@@ -51,6 +76,9 @@ const ViewEvent = () => {
                     </button>
                     <button
                       type="button"
+                      onClick={() => {
+                        deleteEvent(event._id);
+                      }}
                       className="inline-flex justify-center items-center gap-2 px-6 py-3 mr-3 font-bold text-center uppercase align-middle transition-all rounded-lg cursor-pointer bg-red-500/0 leading-pro text-xs ease-soft-in tracking-tight-soft bg-150 bg-x-25 hover:bg-red-500/50 hover:scale-102 active:bg-red-500/45 text-white"
                     >
                       <RiDeleteBin6Line />

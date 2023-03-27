@@ -40,8 +40,9 @@ let filehandler = app.use(
 //File Uploading Ends
 
 router.post("/add", filehandler, eventController.addEvent);
-router.get("/show", eventController.getAllEvents);
+router.get("", eventController.getAllEvents);
+router.get("/:id", eventController.getSpecificEvents);
 // router.post("/update", verifyToken, eventController.updateEvent);
-// router.post("/delete", verifyToken, eventController.deleteEvent);
+router.delete("/:id", eventController.deleteEvent);
 
 module.exports = router;

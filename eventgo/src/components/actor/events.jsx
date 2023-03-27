@@ -10,16 +10,13 @@ import { Card, Button, CardActionArea, CardActions } from "@mui/material";
 import QRCode from "qrcode.react";
 
 const Events = () => {
-  const userId = localStorage.getItem("id");
   const [events, setEvents] = useState([]);
-  const [payments, setPayments] = useState([]);
-  const [showQRCode, setShowQRCode] = useState(false);
-  const qrRef = useRef(null);
 
   // Get events
+
   useEffect(() => {
     axios
-      .get("/event/show")
+      .get("/event")
       .then((response) => {
         setEvents(response.data);
       })
@@ -27,28 +24,6 @@ const Events = () => {
         console.log(error);
       });
   }, []);
-
-  // Get payment Details
-  useEffect(() => {
-    axios
-      .get(`/payment/get/${userId}`)
-      .then((response) => {
-        setPayments(response.data);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  }, [showQRCode]);
-
-  // Make QR Code Downloadable
-  const handleDownload = () => {
-    const canvas = qrRef.current.querySelector("canvas");
-    const dataURL = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.href = dataURL;
-    link.download = "qrcode.png";
-    link.click();
-  };
 
   // Khalti checkout
   let checkout = new KhaltiCheckout(config);
@@ -112,46 +87,6 @@ const Events = () => {
           </Card>
         ))}
       </div>
-
-      {/* QR Code for Payment */}
-      {payments.length !== 0 ? (
-        <div
-          ref={qrRef}
-          className="w-fit flex flex-col gap-3 p-5 my-10 justify-center items-center border-2 border-gray-400"
-        >
-          <button onClick={() => setShowQRCode(!showQRCode)}>
-            Show QR Code
-          </button>
-          {showQRCode && (
-            <div className="flex flex-col justify-center items-center">
-              <QRCode
-                id="qr-code"
-                value={JSON.stringify(
-                  payments.reduce((obj, item) => {
-                    obj[item.idx] = {
-                      eventTitle: item.eventTitle,
-                      amount: item.amount / 100,
-                      mobile: item.mobile,
-                      token: item.token,
-                      status: "verified",
-                      approved_by: "EventGO",
-                    };
-                    return obj;
-                  }, {})
-                )}
-              />
-              <button className="mt-2" onClick={() => handleDownload()}>
-                Download QR Code
-              </button>
-            </div>
-          )}
-
-          <h5 className="text-sm font-light">Powered by EventGO</h5>
-        </div>
-      ) : (
-        ""
-      )}
-      {/* QR Code for payment ends */}
     </>
   );
 };

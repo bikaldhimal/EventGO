@@ -1,5 +1,8 @@
 import khaltiKey from "./khaltiKey";
 import axios from "./../../axios";
+// import { useNavigate } from "react-router-dom";
+
+// const navigate = useNavigate();
 
 let config = {
   // replace this key with yours
@@ -46,6 +49,7 @@ let config = {
         .catch((error) => {
           console.log(error);
         });
+      // navigate("/actor/ticket");
     },
 
     // onError handler is optional
