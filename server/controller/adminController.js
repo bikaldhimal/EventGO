@@ -1,5 +1,6 @@
 const verifyToken = require("./../middleware/verifyToken");
 const User = require("./../model/userModel");
+const Payment = require("./../model/paymentModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -140,5 +141,15 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
+  }
+};
+
+// Get all payments till date by all users
+exports.getAllPayments = async (req, res) => {
+  try {
+    const payments = await Payment.find();
+    res.status(200).json(payments);
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
 };

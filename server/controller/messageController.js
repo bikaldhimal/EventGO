@@ -12,6 +12,7 @@ exports.create = (req, res) => {
     receiver: req.body.receiver,
     files,
   });
+  console.log(message);
   //  Save Message in the database
   message
     .save()

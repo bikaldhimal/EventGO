@@ -11,5 +11,6 @@ const isAdmin = require("../middleware/isAdmin");
 router.post("/login", adminController.login);
 router.get("/users", adminController.getUser);
 router.delete("/users/:id", adminController.deleteUser);
+router.get("/payments", adminController.getAllPayments);
 
 module.exports = router;

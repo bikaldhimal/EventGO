@@ -46,6 +46,10 @@ var UserSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    suspended: {
+      type: Boolean,
+      default: false,
+    },
     date: {
       type: Date,
       default: Date.now,

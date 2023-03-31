@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import axios from "./../../axios";
+// import axios from "./../../axios";
 import { HiMenuAlt3, HiUserGroup } from "react-icons/hi";
 import { SiEventbrite } from "react-icons/si";
 import { FaUserAlt } from "react-icons/fa";
@@ -13,7 +13,7 @@ const ActorNav = () => {
   const menus = [
     { name: "events", link: "/actor", icon: SiEventbrite },
     { name: "profile", link: "/actor/profile", icon: FaUserAlt },
-    { name: "followers", link: "/actor/follower", icon: HiUserGroup },
+    // { name: "followers", link: "/actor/follower", icon: HiUserGroup },
     { name: "messages", link: "/actor/message", icon: MdMessage },
     { name: "tickets", link: "/actor/ticket", icon: MdQrCodeScanner },
     { name: "help", link: "/actor/help", icon: MdOutlineHelp },
@@ -21,16 +21,6 @@ const ActorNav = () => {
   ];
 
   const [open, setOpen] = React.useState(true);
-
-  const handleLogout = async (e) => {
-    try {
-      await axios.get("/user/logout");
-      // localStorage.clear();
-      // console.clear();
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
@@ -52,7 +42,7 @@ const ActorNav = () => {
               <Link
                 to={menu?.link}
                 key={i}
-                onClick={menu?.name === "logout" ? handleLogout() : undefined}
+                // onClick={menu?.name === "logout" ? handleLogout() : undefined}
                 className={` ${
                   menu?.margin && "mt-10 hover:bg-red-400/30"
                 } group flex items-center gap-3.5 text-sm font-medium p-2 hover:bg-gray-800 rounded-md`}

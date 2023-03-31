@@ -65,7 +65,8 @@ const Login = () => {
           localStorage.setItem("role", response.data.role);
           localStorage.setItem("isActive", response.data.isActive);
           if (response.data.role === "actor") return navigate("/actor");
-          if (response.data.role === "manager") return navigate("/manager");
+          if (response.data.role === "manager")
+            return navigate("/manager/event/view");
           if (response.data.role === "user") return navigate("/user");
           if (response.data.role === "admin") return navigate("/admin");
         } else {

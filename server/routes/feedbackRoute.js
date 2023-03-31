@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const bodyParser = require("body-parser");
 const multer = require("multer");
 
-router.use(bodyParser.json());
-
 const app = express();
+
+const feedbackController = require("./../controller/feedbackController");
 
 // File Uploading with multer
 const fileStorage = multer.diskStorage({
@@ -37,18 +36,9 @@ const fileFilter = (req, file, cb) => {
 let filehandler = app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
+//File Uploading Ends
 
-const userController = require("./../controller/userController");
-
-router.post("/signup", userController.signup);
-router.post("/login", userController.login);
-router.post("/upload/profile", userController.uploadProfile);
-router.put("/update", filehandler, userController.updateProfile);
-router.post("/forgot-password", userController.forgotPassword);
-router.post("/check-otp", userController.checkOTP);
-router.post("/reset-password", userController.resetPassword);
-router.get("/logout", userController.logout);
-router.get("/artists", userController.getArtists);
-router.get("/managers", userController.getManagers);
+router.post("/add", filehandler, feedbackController.addFeedback);
+router.get("/all", feedbackController.getFeedback);
 
 module.exports = router;

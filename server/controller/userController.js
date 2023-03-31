@@ -91,7 +91,7 @@ exports.login = async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "24h",
       }
     );
     // set isActive to true
@@ -117,8 +117,8 @@ exports.login = async (req, res) => {
 // Update Profile Controller
 exports.updateProfile = async (req, res) => {
   try {
-    const { id, name, address, description, role, password } = req.body;
-    // const image = req.file.filename;
+    const { id, name, address, description } = req.body;
+    let image = req.file ? req.file.filename : undefined;
 
     const user = await User.findByIdAndUpdate(
       id,
@@ -126,18 +126,17 @@ exports.updateProfile = async (req, res) => {
         name,
         address,
         description,
-        role,
-        password,
-        // image,
+        ...(image && { image: req.file.filename }),
       },
       {
         new: true,
       }
     );
+
     res.status(200).json({
       status: 200,
-      success: "User Updated Successfully",
-      user: user,
+      success: "User updated successfully",
+      user,
     });
   } catch (err) {
     res.status(500).json({
@@ -359,5 +358,15 @@ exports.getArtists = async (req, res) => {
     res.status(200).json(artists);
   } catch (err) {
     res.status(500).send(err.message);
+  }
+};
+
+// Get all Managers
+exports.getManagers = async (req, res) => {
+  try {
+    const managers = await User.find({ role: "manager" });
+    res.status(200).json(managers);
+  } catch (err) {
+    console.log(err.message);
   }
 };

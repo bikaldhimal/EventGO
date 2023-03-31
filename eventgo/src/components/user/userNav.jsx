@@ -6,14 +6,16 @@ import { SiEventbrite } from "react-icons/si";
 import { FaUserAlt } from "react-icons/fa";
 import { MdMessage, MdOutlineHelp } from "react-icons/md";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { MdQrCodeScanner } from "react-icons/md";
 import UserAppBar from "./userAppBar";
 
 const UserNav = () => {
   const menus = [
-    { name: "event", link: "/user", icon: SiEventbrite },
+    { name: "events", link: "/user", icon: SiEventbrite },
     { name: "profile", link: "/user/profile", icon: FaUserAlt },
-    { name: "follower", link: "/user/follower", icon: HiUserGroup },
-    { name: "message", link: "/user/message", icon: MdMessage },
+    { name: "followers", link: "/user/follower", icon: HiUserGroup },
+    { name: "messages", link: "/user/message", icon: MdMessage },
+    { name: "tickets", link: "/user/ticket", icon: MdQrCodeScanner },
     { name: "help", link: "/user/help", icon: MdOutlineHelp },
     { name: "logout", link: "/login", icon: RiLogoutCircleLine, margin: true },
   ];

@@ -3,7 +3,7 @@ import axios from "./../../axios";
 import { Link } from "react-router-dom";
 import QRCode from "qrcode.react";
 
-const QrCode = () => {
+const UserQR = () => {
   const userId = localStorage.getItem("id");
   const [payments, setPayments] = useState([]);
   const [showQRCode, setShowQRCode] = useState(true);
@@ -81,7 +81,7 @@ const QrCode = () => {
       ) : (
         <h3 className="text-center my-10">
           There are no tickets yet. <br />
-          <Link to="/actor" className="text-sm font-normal text-blue-500">
+          <Link to="/user" className="text-sm font-normal text-blue-500">
             Go back to events and buy the tickets
           </Link>
         </h3>
@@ -90,4 +90,4 @@ const QrCode = () => {
   );
 };
 
-export default QrCode;
+export default UserQR;

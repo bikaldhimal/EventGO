@@ -13,7 +13,7 @@ import Contact from "./components/landing/contact";
 import ActorNav from "./components/actor/actorNav";
 import Events from "./components/actor/events";
 import Profile from "./components/actor/profile";
-import Follower from "./components/actor/follower";
+// import Follower from "./components/actor/follower";
 import Message from "./components/actor/message";
 import Chat from "./components/actor/chat";
 import ActorHelp from "./components/actor/actorHelp";
@@ -44,6 +44,7 @@ import UserMessage from "./components/user/userMessage";
 import UserChat from "./components/user/userChat";
 import UserHelp from "./components/user/userHelp";
 import QrCode from "./components/actor/qrCode";
+import UserQR from "./components/user/userQR";
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
             <Route path="follower" element={<UserFollower />} />
             <Route path="message" element={<UserMessage />} />
             <Route path="chat" element={<UserChat />} />
+            <Route path="ticket" element={<UserQR />} />
             <Route path="help" element={<UserHelp />} />
           </Route>
           {/* Artist Routes */}
@@ -83,7 +85,7 @@ function App() {
               <Route path="event/ticket" element={<Ticket />} />
             </Route>
             <Route path="profile" element={<Profile />} />
-            <Route path="follower" element={<Follower />} />
+            {/* <Route path="follower" element={<Follower />} /> */}
             <Route path="message" element={<Message />} />
             <Route path="chat" element={<Chat />} />
             <Route path="ticket" element={<QrCode />} />

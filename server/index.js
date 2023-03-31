@@ -69,6 +69,7 @@ const userModel = require("./model/userModel");
 const todoRoute = require("./routes/todoRoute");
 const messageRoute = require("./routes/messageRoute");
 const paymentRoute = require("./routes/paymentRoute");
+const feedbackRoute = require("./routes/feedBackRoute");
 
 // Initializing the routes
 app.use("/api/admin", adminRoutes);
@@ -77,6 +78,7 @@ app.use("/api/event", eventRoute);
 app.use("/api/todos", todoRoute);
 app.use("/api/message", messageRoute);
 app.use("/api/payment", paymentRoute);
+app.use("/api/feedback", feedbackRoute);
 
 // Signin with Google
 passport.serializeUser(function (user, cb) {

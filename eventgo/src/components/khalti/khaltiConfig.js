@@ -32,7 +32,7 @@ let config = {
       axios
         .post("/payment/add", {
           idx: payload.idx,
-          amount: payload.amount,
+          amount: payload.amount / 100,
           mobile: payload.mobile,
           productIdentity: payload.product_identity,
           productName: payload.product_name,

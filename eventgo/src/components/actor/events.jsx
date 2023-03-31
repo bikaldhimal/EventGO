@@ -7,7 +7,6 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Card, Button, CardActionArea, CardActions } from "@mui/material";
-import QRCode from "qrcode.react";
 
 const Events = () => {
   const [events, setEvents] = useState([]);

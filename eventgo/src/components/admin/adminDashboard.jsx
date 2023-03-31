@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "./../../axios";
 import { Link, useNavigate } from "react-router-dom";
-import { SiEventbrite, SiGoogleanalytics } from "react-icons/si";
+import { GiCash } from "react-icons/gi";
+import { HiUsers } from "react-icons/hi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AdminDashboard = () => {
   let navigate = useNavigate();
   const [users, setUsers] = useState([]);
+  const [payments, setPayments] = useState([]);
   const email = users.email;
   const [flag, setFlag] = useState(false);
 
+  // Calculating all the amounts from the transaction records
+  const totalAmount = payments.reduce((acc, payment) => {
+    return acc + parseInt(payment.amount);
+  }, 0);
+
+  // Get all the users
   useEffect(() => {
     axios
       .get("/admin/users", { email })
@@ -20,6 +28,18 @@ const AdminDashboard = () => {
       })
       .catch((error) => {
         console.log(error);
+      });
+  }, [flag]);
+
+  // Get all the payments
+  useEffect(() => {
+    axios
+      .get("/admin/payments")
+      .then((response) => {
+        setPayments(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
   }, [flag]);
 
@@ -42,10 +62,6 @@ const AdminDashboard = () => {
       });
     }
   };
-
-  // const refreshPage = () => {
-  //   navigate("/admin");
-  // };
 
   const handleDelete = (user, name) => {
     const confirmDelete = window.confirm(
@@ -84,8 +100,8 @@ const AdminDashboard = () => {
         <div className="grid grid-flow-row gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* card */}
           <div className="bg-white shadow-md shadow-gray-300 rounded-lg relative w-fit mt-8">
-            <div className="flex justify-center items-center absolute -top-5 left-4 bg-blue-500/80 p-6 rounded-2xl shadow-lg shadow-blue-500/50 text-white w-fit">
-              <SiEventbrite />
+            <div className="flex justify-center items-center absolute -top-5 left-4 bg-blue-500/80 p-4 rounded-2xl shadow-lg shadow-blue-500/50 text-white w-fit">
+              <HiUsers className="h-8 w-8" />
             </div>
             <div className="flex flex-col justify-end w-full items-end pl-48 overflow-hidden pr-4 pt-4 gap-1">
               <p className="text-sm font-light text-end tracking-wide">
@@ -104,15 +120,15 @@ const AdminDashboard = () => {
           {/* card end */}
           {/* card */}
           <div className="bg-white shadow-md shadow-gray-300 rounded-lg relative w-fit mt-8">
-            <div className="flex justify-center items-center absolute -top-5 left-4 bg-amber-500/80 p-6 rounded-2xl shadow-lg shadow-amber-500/50 text-white w-fit">
-              <SiGoogleanalytics />
+            <div className="flex justify-center items-center absolute -top-5 left-4 bg-amber-500/80 p-4 rounded-2xl shadow-lg shadow-amber-500/50 text-white w-fit">
+              <GiCash className="h-8 w-8" />
             </div>
             <div className="flex flex-col justify-end w-full items-end pl-48 overflow-hidden pr-4 pt-4 gap-1">
               <p className="text-sm font-light text-end tracking-wide">
                 Total Sales
               </p>
               <p className="text-xl font-medium text-end tracking-wide">
-                $10900
+                NPR. {totalAmount}
               </p>
             </div>
             <hr className="mt-5" />
