@@ -49,6 +49,7 @@ router.post("/check-otp", userController.checkOTP);
 router.post("/reset-password", userController.resetPassword);
 router.get("/logout", userController.logout);
 router.get("/artists", userController.getArtists);
+router.get("/users", userController.getUsers);
 router.get("/managers", userController.getManagers);
 
 module.exports = router;

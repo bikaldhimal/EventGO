@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "./../../axios";
 import KhaltiCheckout from "khalti-checkout-web";
 import config from "./../khalti/khaltiConfig";
@@ -7,25 +7,69 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Card, Button, CardActionArea, CardActions } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Events = () => {
+  let navigate = useNavigate();
   const [events, setEvents] = useState([]);
 
   // Get events
-
   useEffect(() => {
     axios
       .get("/event")
       .then((response) => {
         setEvents(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
+  // Request event
+  const handleRequest = (event, userId) => {
+    if (event) {
+      axios
+        .post(`event/request`, {
+          managerId: userId,
+          artistId: localStorage.getItem("id"),
+          eventId: event,
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.status === 200) {
+            navigate("/actor/request");
+          }
+          if (response.data.status === 409) {
+            if (!toast.isActive("empty-fields")) {
+              toast.error("Already requested to this event", {
+                position: "top-right",
+                autoClose: 2000,
+                toastId: "empty-fields",
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+          handleError();
+        });
+    }
+  };
+
   // Khalti checkout
   let checkout = new KhaltiCheckout(config);
+
+  const handleError = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Error in server", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
 
   return (
     <>
@@ -68,7 +112,11 @@ const Events = () => {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button size="small" color="primary">
+              <Button
+                onClick={() => handleRequest(event._id, event.userId)}
+                size="small"
+                color="primary"
+              >
                 Request
               </Button>
               <Button
@@ -86,6 +134,7 @@ const Events = () => {
           </Card>
         ))}
       </div>
+      <ToastContainer />
     </>
   );
 };

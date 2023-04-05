@@ -9,14 +9,12 @@ const Chat = () => {
 
   const getMessage = storeActor((state) => state.getMessage);
   const messages = storeActor((state) => state.messages);
-  console.log(messages);
 
   return (
     <>
       <div className="min-w-md w-full bg-white shadow px-10 py-10">
         <Link to="/actor/message">Nepathya - Eva</Link>
         <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-        {}
         <div className="flex flex-col h-[30rem] sm:h-[40rem] gap-2 w-full overflow-hidden overflow-y-scroll scroll-smooth">
           {messages?.map(
             (message) =>

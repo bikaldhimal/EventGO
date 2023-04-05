@@ -6,6 +6,7 @@ const app = express();
 
 const eventController = require("./../controller/eventController");
 const verifyToken = require("./../middleware/verifyToken");
+const inviteRequest = require("../controller/inviteRequestController");
 
 // File Uploading with multer
 const fileStorage = multer.diskStorage({
@@ -44,5 +45,12 @@ router.get("", eventController.getAllEvents);
 router.get("/:id", eventController.getSpecificEvents);
 // router.post("/update", verifyToken, eventController.updateEvent);
 router.delete("/:id", eventController.deleteEvent);
+
+router.post("/request", inviteRequest.requestInvite);
+router.get("/request/:id", inviteRequest.getRequestsSent);
+router.get("/request/:managerId", inviteRequest.getRequestsByManager);
+
+router.post("/invite-artist", inviteRequest.inviteArtists);
+router.get("/invite-artist/:id", inviteRequest.getInvitesSent);
 
 module.exports = router;

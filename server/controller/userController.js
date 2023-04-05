@@ -361,6 +361,15 @@ exports.getArtists = async (req, res) => {
   }
 };
 
+// Get all General Users
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find({ role: "user" });
+    res.status(200).json(users);
+  } catch (err) {
+    console.log(err.users);
+  }
+};
 // Get all Managers
 exports.getManagers = async (req, res) => {
   try {

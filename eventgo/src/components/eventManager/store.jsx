@@ -1,18 +1,18 @@
 import { create } from "zustand";
 import axios from "./../../axios";
 
-export const storeActor = create((set, get) => ({
+export const storeManager = create((set, get) => ({
   message: "",
   receiver: "",
   files: null,
   messages: [],
 
-  // For chatting
   setMessage: (data) => {
     set({ message: data });
   },
   setReceiver: (data) => {
     set({ receiver: data });
+    localStorage.setItem("receiver", data);
   },
   setFiles: (data) => {
     set({ files: data });

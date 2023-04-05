@@ -24,9 +24,7 @@ const Message = () => {
   const handleButtonClick = (managerId) => {
     setReceiver(managerId);
     getMessage();
-    if (receiver) {
-      navigate("/actor/chat");
-    }
+    navigate("/actor/chat");
   };
 
   return (

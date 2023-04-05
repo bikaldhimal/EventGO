@@ -45,6 +45,8 @@ import UserChat from "./components/user/userChat";
 import UserHelp from "./components/user/userHelp";
 import QrCode from "./components/actor/qrCode";
 import UserQR from "./components/user/userQR";
+import Request from "./components/actor/request";
+import ManagerRequests from "./components/eventManager/managerRequests";
 
 function App() {
   return (
@@ -85,7 +87,7 @@ function App() {
               <Route path="event/ticket" element={<Ticket />} />
             </Route>
             <Route path="profile" element={<Profile />} />
-            {/* <Route path="follower" element={<Follower />} /> */}
+            <Route path="request" element={<Request />} />
             <Route path="message" element={<Message />} />
             <Route path="chat" element={<Chat />} />
             <Route path="ticket" element={<QrCode />} />
@@ -100,6 +102,7 @@ function App() {
               <Route path="event/todo" element={<Todo />} />
             </Route>
             <Route path="artist" element={<Artist />} />
+            <Route path="invite" element={<ManagerRequests />} />
             <Route path="profile" element={<ManagerProfile />} />
             <Route path="message" element={<ManagerMessage />} />
             <Route path="chat" element={<ManagerChat />} />

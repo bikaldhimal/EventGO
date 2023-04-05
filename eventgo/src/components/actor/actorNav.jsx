@@ -7,13 +7,15 @@ import { FaUserAlt } from "react-icons/fa";
 import { MdMessage, MdOutlineHelp } from "react-icons/md";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { MdQrCodeScanner } from "react-icons/md";
+import { GoGitPullRequest } from "react-icons/go";
 import AppBar from "./appBar";
 
 const ActorNav = () => {
   const menus = [
-    { name: "events", link: "/actor", icon: SiEventbrite },
     { name: "profile", link: "/actor/profile", icon: FaUserAlt },
+    { name: "events", link: "/actor", icon: SiEventbrite },
     // { name: "followers", link: "/actor/follower", icon: HiUserGroup },
+    { name: "requests", link: "/actor/request", icon: GoGitPullRequest },
     { name: "messages", link: "/actor/message", icon: MdMessage },
     { name: "tickets", link: "/actor/ticket", icon: MdQrCodeScanner },
     { name: "help", link: "/actor/help", icon: MdOutlineHelp },
