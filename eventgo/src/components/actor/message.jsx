@@ -21,10 +21,22 @@ const Message = () => {
       });
   }, []);
 
+  // const handleButtonClick = (managerId) => {
+  //   setReceiver(managerId);
+  //   getMessage();
+  //   navigate("/actor/chat");
+  // };
+
   const handleButtonClick = (managerId) => {
     setReceiver(managerId);
     getMessage();
     navigate("/actor/chat");
+    // Update the localStorage with the current user's name and the manager's name
+    const currentUser = localStorage.getItem("name"); // Replace with the current user's name
+    const managerName = managers.find(
+      (manager) => manager._id === managerId
+    ).name;
+    localStorage.setItem("convo", `${currentUser} - ${managerName}`);
   };
 
   return (

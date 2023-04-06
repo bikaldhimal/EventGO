@@ -35,12 +35,24 @@ const ManagerMessage = () => {
       });
   }, []);
 
+  // const handleActor = (actorId) => {
+  //   setReceiver(actorId);
+  //   getMessage();
+  //   navigate("/manager/chat");
+  // };
+
   const handleActor = (actorId) => {
     setReceiver(actorId);
-    console.log(actorId);
     getMessage();
-    if (receiver) {
-      navigate("/manager/chat");
+    navigate("/manager/chat");
+
+    // Find the artist with the given actorId in the artists array
+    const artist = artists.find((artist) => artist._id === actorId);
+    if (artist) {
+      // Update the localStorage with the current manager's name and the artist's name
+      const currentArtist = localStorage.getItem("name"); // Replace with the current manager's name
+      const artistName = artist.name;
+      localStorage.setItem("convo", `${artistName} - ${currentArtist}`);
     }
   };
 
@@ -50,6 +62,14 @@ const ManagerMessage = () => {
     getMessage();
     if (receiver) {
       navigate("/manager/chat");
+    }
+    // Find the user with the given userId in the users array
+    const user = users.find((user) => user._id === userId);
+    if (user) {
+      // Update the localStorage with the current manager's name and the user's name
+      const currentArtist = localStorage.getItem("name"); // Replace with the current manager's name
+      const userName = user.name;
+      localStorage.setItem("convo", `${currentArtist} - ${userName}`);
     }
   };
 

@@ -7,12 +7,12 @@ export const storeActor = create((set, get) => ({
   files: null,
   messages: [],
 
-  // For chatting
   setMessage: (data) => {
     set({ message: data });
   },
   setReceiver: (data) => {
     set({ receiver: data });
+    localStorage.setItem("receiver", data);
   },
   setFiles: (data) => {
     set({ files: data });
@@ -22,7 +22,7 @@ export const storeActor = create((set, get) => ({
   },
 
   sendMessage: () => {
-    const { message, receiver, files } = get();
+    const { message, receiver } = get();
     let formData = new FormData();
     formData.append("files", get().files);
     formData.append("receiver", receiver);
@@ -37,6 +37,7 @@ export const storeActor = create((set, get) => ({
       })
       .then((response) => {
         console.log(response.data);
+        set({ message: "" }); // Clear the message state after sending
       })
       .catch((error) => {
         console.log(error.message);
