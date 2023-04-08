@@ -56,12 +56,14 @@ const Artist = () => {
 
   // api call to invite artist
   const handleInvite = () => {
+    console.log(selectedArtist);
+    console.log(selectedEvent);
+    console.log(localStorage.getItem("id"));
     if (selectedEvent) {
-      // make sure selectedEvent is not undefined
       axios
         .post("/event/invite-artist", {
-          managerId: localStorage.getItem("id"),
           artistId: selectedArtist,
+          managerId: localStorage.getItem("id"),
           eventId: selectedEvent,
         })
         .then((response) => {

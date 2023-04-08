@@ -4,16 +4,12 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const cors = require("cors");
 const passport = require("passport");
-// const socket = require("socket.io");
 const isLoggedIn = require("./middleware/isLoggedIn");
 const http = require("http");
 const { Server } = require("socket.io");
 const path = require("path");
 require("dotenv").config();
 const app = express();
-
-// server -> http
-// const server = http.createServer(app);
 
 const corsOptions = {
   credentials: true,
@@ -24,26 +20,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
-
-// // socket io -> also setups cors
-// const io = new Server(server, {
-//   cors: {
-//     origin: "*",
-//     methods: ["GET", "POST"],
-//   },
-// });
-
-// // socket io connection
-// io.on("connection", (socket) => {
-//   console.log(`connected ${socket.id}`);
-//   socket.on("disconnect", () => {
-//     console.log("disconnected");
-//   });
-//   socket.on("send-message", (data) => {
-//     console.log(data);
-//     // io.emit('new-message', data);
-//   });
-// });
 
 var userProfile;
 // For Google Authentication
@@ -69,7 +45,7 @@ const userModel = require("./model/userModel");
 const todoRoute = require("./routes/todoRoute");
 const messageRoute = require("./routes/messageRoute");
 const paymentRoute = require("./routes/paymentRoute");
-const feedbackRoute = require("./routes/feedBackRoute");
+const feedbackRoute = require("./routes/feedbackRoute");
 
 // Initializing the routes
 app.use("/api/admin", adminRoutes);

@@ -5,6 +5,7 @@ import { GrRefresh } from "react-icons/gr";
 
 const ManagerRequests = () => {
   const [requests, setRequests] = useState([]);
+  const [invites, setInvites] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const pageSize = 5; // number of items to show per page
   const [flag, setFlag] = useState(false);
@@ -15,18 +16,59 @@ const ManagerRequests = () => {
     year: "numeric",
   };
 
+  // update status
+  const acceptRequest = (id) => {
+    console.log(id);
+    axios
+      .post(`/event/update-request/${id}`, {
+        status: "accepted",
+      })
+      .then((response) => {
+        console.log("Response:", response);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const declineRequest = (id) => {
+    axios
+      .post(`/event/update-request/${id}`, {
+        status: "rejected",
+      })
+      .then((response) => {
+        console.log("Response:", response);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
   // Get requests sent by artists
   useEffect(() => {
     axios
-      .get(`/event/request/${localStorage.getItem("id")}`)
+      .get(`/event/request/manager/${localStorage.getItem("id")}`)
       .then((response) => {
-        setRequests(response.data);
+        setRequests(response?.data);
         console.log("Response:", response);
       })
       .catch((error) => {
         console.log(error.message);
       });
   }, [flag]);
+
+  // get invites sent by managers to artist
+  useEffect(() => {
+    axios
+      .get(`/event/invite-artist/manager/${localStorage.getItem("id")}`)
+      .then((response) => {
+        setInvites(response?.data);
+        console.log("Response:", response);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }, []);
 
   const handleRefresh = () => {
     if (flag) {
@@ -71,21 +113,21 @@ const ManagerRequests = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {requests
+                    {invites
                       .slice(
                         currentPage * pageSize,
                         (currentPage + 1) * pageSize
                       )
-                      .map((request, index) => (
+                      .map((invite, index) => (
                         <tr key={index}>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-medium text-gray-900">
-                              {request.eventName}
+                              {invite.eventTitle}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-500">
-                              {new Date(request.date).toLocaleDateString(
+                              {new Date(invite.date).toLocaleDateString(
                                 "en-US",
                                 dateOptions
                               )}
@@ -95,14 +137,14 @@ const ManagerRequests = () => {
                           <td className="px-6 py-4 whitespace-nowrap text-start text-sm font-medium">
                             <div
                               className={`text-sm ${
-                                request.status === "pending"
+                                invite.status === "pending"
                                   ? "text-yellow-500"
                                   : request.status === "accepted"
                                   ? "text-green-500"
                                   : "text-red-500"
                               }`}
                             >
-                              {request.status}
+                              {invite.status}
                             </div>
                           </td>
                         </tr>
@@ -141,7 +183,7 @@ const ManagerRequests = () => {
                   onClick={() => handleRefresh()}
                   className="flex gap-1 text-sm items-center hover: cursor-pointer hover:text-gray-500"
                 >
-                  <GrRefresh />
+                  {/* <GrRefresh /> */}
                   <p>Refresh</p>
                 </div>
               </div>
@@ -216,10 +258,26 @@ const ManagerRequests = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <button className="mr-2 bg-green-500 hover:bg-green-600 text-white py-1 px-2 rounded">
+                          <button
+                            onClick={() => acceptRequest(request._id)}
+                            className={`mr-2 bg-green-500 ${
+                              request.status !== "pending"
+                                ? "opacity-50 cursor-not-allowed"
+                                : "hover:bg-green-600"
+                            } text-white py-1 px-2 rounded`}
+                            disabled={request.status !== "pending"}
+                          >
                             Accept
                           </button>
-                          <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">
+                          <button
+                            onClick={() => declineRequest(request._id)}
+                            className={`bg-red-500 ${
+                              request.status !== "pending"
+                                ? "opacity-50 cursor-not-allowed"
+                                : "hover:bg-red-600"
+                            } text-white py-1 px-2 rounded`}
+                            disabled={request.status !== "pending"}
+                          >
                             Reject
                           </button>
                         </td>

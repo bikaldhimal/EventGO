@@ -7,13 +7,14 @@ import { FaUserAlt } from "react-icons/fa";
 import { MdMessage, MdOutlineHelp } from "react-icons/md";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { MdQrCodeScanner } from "react-icons/md";
+import { GoGitPullRequest } from "react-icons/go";
 import UserAppBar from "./userAppBar";
 
 const UserNav = () => {
   const menus = [
     { name: "events", link: "/user", icon: SiEventbrite },
     { name: "profile", link: "/user/profile", icon: FaUserAlt },
-    { name: "followers", link: "/user/follower", icon: HiUserGroup },
+    { name: "requests", link: "/user/request", icon: GoGitPullRequest },
     { name: "messages", link: "/user/message", icon: MdMessage },
     { name: "tickets", link: "/user/ticket", icon: MdQrCodeScanner },
     { name: "help", link: "/user/help", icon: MdOutlineHelp },

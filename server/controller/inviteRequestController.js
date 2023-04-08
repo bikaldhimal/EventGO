@@ -88,14 +88,13 @@ exports.getRequestsSent = async (req, res) => {
 exports.getRequestsByManager = async (req, res) => {
   try {
     const managerId = req.params.managerId;
-    console.log("managerID", managerId); // Get the managerId from the request parameters
 
     const inviteRequests = await InviteRequest.find({
       type: "request",
     })
       .populate({
         path: "eventId",
-        select: "title venue userId",
+        select: "_id title venue userId",
         match: { userId: managerId }, // Filter events that belong to the specific manager
       })
       .populate({ path: "managerId", select: "name" })
@@ -106,6 +105,7 @@ exports.getRequestsByManager = async (req, res) => {
       .filter((request) => request.eventId) // Filter out requests with null eventId after population
       .map((request) => {
         return {
+          _id: request._id,
           eventTitle: request.eventId.title,
           eventVenue: request.eventId.venue,
           managerName: request.managerId.name,
@@ -125,21 +125,11 @@ exports.getRequestsByManager = async (req, res) => {
 // invite artists to an event by an event organizer
 exports.inviteArtists = async (req, res) => {
   try {
-    const { managerId, eventId } = req.body;
-    if (!requestedBy) {
-      return res.status(400).json({
-        error: "requestedBy is required",
-        status: 404,
-      });
-    }
-    if (!eventId) {
-      return res.status(400).json({
-        error: "eventId is required",
-        status: 404,
-      });
-    }
+    const { artistId, managerId, eventId } = req.body;
+
     const inviteRequest = await InviteRequest.findOne({
-      requestedBy,
+      artistId,
+      managerId,
       eventId,
     });
     if (inviteRequest) {
@@ -149,8 +139,8 @@ exports.inviteArtists = async (req, res) => {
       });
     }
     const newInviteRequest = new InviteRequest({
-      invitedBy,
-      requestedBy,
+      artistId,
+      managerId,
       eventId,
       type: "invite",
     });
@@ -172,7 +162,80 @@ exports.getInvitesSent = async (req, res) => {
     const inviteRequests = await InviteRequest.find({
       managerId: managerId,
       type: "invite",
-    });
-    res.status(200).json(inviteRequests);
-  } catch (err) {}
+    }).populate({ path: "eventId", select: "title" });
+
+    // Mapping the inviteRequests to a new array containing the previous data along with the event title
+    const responseData = inviteRequests.map((inviteRequest) => ({
+      ...inviteRequest.toObject(),
+      eventTitle: inviteRequest.eventId.title,
+    }));
+
+    res.status(200).json(responseData);
+  } catch (err) {
+    res.status(500).send(err);
+    error: err.message;
+  }
+};
+
+// get invites sent by an event organizer to an artist throught the artist's profile
+exports.getInviteByArtist = async (req, res) => {
+  try {
+    const artistId = req.params.id;
+    console.log("Artist ID:", artistId);
+
+    const inviteRequests = await InviteRequest.find({
+      artistId: "641ae76034fb75623f67c292",
+      type: "invite",
+    }).populate({ path: "eventId", select: "title venue" });
+
+    console.log("Invite requests:", inviteRequests);
+
+    // Mapping the inviteRequests to a new array containing the previous data along with the event title
+    const responseData = inviteRequests.map((inviteRequest) => ({
+      ...inviteRequest.toObject(),
+      eventTitle: inviteRequest.eventId.title,
+      venue: inviteRequest.eventId.venue,
+    }));
+
+    console.log("Response data:", responseData);
+
+    res.status(200).json(responseData);
+  } catch (err) {
+    res.status(500).send(err);
+    error: err.message;
+  }
+};
+
+// update request sent by an artist to participate in an event
+exports.updateRequest = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const inviteRequestId = req.params.id;
+    const inviteRequest = await InviteRequest.findByIdAndUpdate(
+      inviteRequestId,
+      { status },
+      { new: true }
+    );
+    res.status(200).json(inviteRequest);
+  } catch (err) {
+    res.status(500).send(err);
+    error: err.message;
+  }
+};
+
+// update invite sent by an event organizer to an artist
+exports.updateInvite = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const inviteRequestId = req.params.id;
+    const inviteRequest = await InviteRequest.findByIdAndUpdate(
+      inviteRequestId,
+      { status },
+      { new: true }
+    );
+    res.status(200).json(inviteRequest);
+  } catch (err) {
+    res.status(500).send(err);
+    error: err.message;
+  }
 };

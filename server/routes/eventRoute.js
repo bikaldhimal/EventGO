@@ -48,9 +48,14 @@ router.delete("/:id", eventController.deleteEvent);
 
 router.post("/request", inviteRequest.requestInvite);
 router.get("/request/:id", inviteRequest.getRequestsSent);
-router.get("/request/:managerId", inviteRequest.getRequestsByManager);
+router.get("/request/manager/:managerId", inviteRequest.getRequestsByManager);
 
-router.post("/invite-artist", inviteRequest.inviteArtists);
-router.get("/invite-artist/:id", inviteRequest.getInvitesSent);
+router.post("/invite-artist", inviteRequest.inviteArtists); // Invite artist to event by the manager
+router.get("/invite-artist/manager/:id", inviteRequest.getInvitesSent); // Get invites sent by the manager
+router.get("/invite-artist/artist/:artistId", inviteRequest.getInviteByArtist); // Get invites sent to the artist
+
+// Update request and Invite
+router.post("/update-request/:id", inviteRequest.updateRequest);
+router.post("/update-invite/:id", inviteRequest.updateInvite);
 
 module.exports = router;
