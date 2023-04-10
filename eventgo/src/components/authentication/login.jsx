@@ -64,6 +64,7 @@ const Login = () => {
           localStorage.setItem("description", response.data.description);
           localStorage.setItem("role", response.data.role);
           localStorage.setItem("isActive", response.data.isActive);
+          localStorage.setItem("image", response.data.image);
           if (response.data.role === "actor") return navigate("/actor");
           if (response.data.role === "manager")
             return navigate("/manager/event/view");

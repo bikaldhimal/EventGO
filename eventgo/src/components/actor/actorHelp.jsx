@@ -13,33 +13,32 @@ const ActorHelp = () => {
 
   const submitFeedback = (e) => {
     e.preventDefault();
-    if (!title || !description) {
+    if (!title || !description || !image) {
       handleEmptyFields();
-    } else {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("description", description);
-      formData.append("image", image);
-      formData.append("userId", localStorage.getItem("id"));
-      formData.append("role", localStorage.getItem("role"));
-
-      axios
-        .post("/feedback/add", {
-          formData,
-        })
-        .then(() => {
-          console.log(formData.title);
-          handleSuccess();
-        })
-        .catch(() => {
-          handleError();
-        });
     }
+
+    const userId = localStorage.getItem("id");
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("image", image);
+    formData.append("role", localStorage.getItem("role"));
+
+    axios
+      .post(`/feedback/${userId}`, formData)
+      .then((response) => {
+        console.log(response.data);
+        handleSuccess();
+      })
+      .catch((err) => {
+        handleError();
+      });
   };
 
   const handleEmptyFields = () => {
     if (!toast.isActive("empty-fields")) {
-      toast.error("The field is empty!", {
+      toast.error("The fields are empty!", {
         position: "top-right",
         autoClose: 2000,
         toastId: "empty-fields",
@@ -105,7 +104,8 @@ const ActorHelp = () => {
           {/* feedback form */}
           {showHide && (
             <form
-              encType="multipart/form-data"
+              type="submit"
+              // encType="multipart/form-data"
               className="feedbackForm flex flex-col justify-start items-start mt-3 gap-3"
             >
               <div className="flex flex-col lg:items-start items-center w-full px-2 gap-2 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">

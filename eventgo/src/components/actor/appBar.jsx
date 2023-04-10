@@ -7,6 +7,7 @@ const AppBar = () => {
   const name = localStorage.getItem("name");
   const address = localStorage.getItem("address");
   const role = localStorage.getItem("role");
+  const image = localStorage.getItem("image");
 
   return (
     <div className="flex justify-between items-center gap-3 w-full border-2 rounded-lg px-5 py-2 bg-gray-800 transparent mb-5">
@@ -16,7 +17,7 @@ const AppBar = () => {
           className="flex w-[4rem] h-[4rem] rounded-full shadow-inner bg-gray-700/90 hover:bg-gray-400 justify-center items-center drop-shadow-sm hover:scale-90 duration-300"
         >
           <img
-            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988&q=80"
+            src={image ? image : NepathyaProfile}
             alt="user profile"
             className="w-[3rem] h-[3rem] rounded-full object-center"
           />

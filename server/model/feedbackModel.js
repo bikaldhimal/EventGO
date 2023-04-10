@@ -1,35 +1,27 @@
-// create mongoose
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
 
-// create a schema
-var FeedbackSchema = new Schema({
-  image: {
-    type: String,
-  },
+const Schema = mongoose.Schema;
+
+const FeedbackSchema = new Schema({
   title: {
     type: String,
-    minlength: [3, "title must be at least 3 characters long"],
-    maxlength: [100, "title must be at least 3 to 100 characters long"],
-    required: true,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
+    // required: true,
   },
   description: {
     type: String,
-    minlength: [5, "target must be at least 5 characters long"],
-    maxlength: [255, "target must be at least 5 to 255  characters long"],
+    // required: true,
   },
-  role: {
+  image: {
     type: String,
-    required: true,
   },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

@@ -3,15 +3,33 @@ import axios from "./../../axios";
 import { BsFillPencilFill } from "react-icons/bs";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile = () => {
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
+  const resetFields = () => {
+    setImage(null);
+    setName("");
+    setAddress("");
+    setDescription("");
+  };
+
+  const resetPasswordFields = () => {
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmNewPassword("");
+  };
 
   //  Update the profile
-  const updateProfile = async (e) => {
+  const updateProfile = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("name", name);
@@ -20,31 +38,107 @@ const Profile = () => {
     formData.append("image", image);
     console.log(formData.image);
 
-    try {
-      const response = await axios.put("/user/update", formData);
-      const data = response.data;
-      console.log(data);
-    } catch (error) {
-      console.error(error);
+    axios
+      .put(`/user/update/${localStorage.getItem("id")}`, formData)
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        localStorage.setItem("name", data.name);
+        localStorage.setItem("addressa", data.address);
+        localStorage.setItem("description", data.description);
+        localStorage.setItem("image", data.image);
+        resetFields();
+        alert("Profile updated successfully");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  // update password
+  const updatePassword = (e) => {
+    e.preventDefault();
+    if (!oldPassword || !newPassword || !confirmNewPassword) {
+      handleEmptyFields();
+    }
+    if (newPassword !== confirmNewPassword) {
+      handleUnMatched();
+    }
+
+    axios
+      .put(`/user/update-password/${localStorage.getItem("id")}`, {
+        oldPassword,
+        newPassword,
+        confirmNewPassword,
+      })
+      .then((response) => {
+        handleSuccess();
+        resetPasswordFields();
+      })
+      .catch((error) => {
+        console.error(error);
+        handleError();
+      });
+  };
+
+  const handleEmptyFields = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Fields are empty!", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleSuccess = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.success("Password updated successfully", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty",
+      });
+    }
+  };
+
+  const handleError = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleUnMatched = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("password-not-matching", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
     }
   };
 
   return (
     <>
       <div className="w-full flex flex-col sm:flex-col lg:flex-row xl:flex-row 2xl:flex-row 3xl:flex-row gap-10">
-        <div className="flex flex-col justify-center items-center max-w-lg min-w-lg bg-white shadow-lg py-10 px-10 gap-2 rounded-lg">
+        <form className="flex flex-col justify-center items-center max-w-lg min-w-lg bg-white shadow-lg py-10 px-10 gap-2 rounded-lg">
           <div className="flex justify-center items-center w-24 h-24 rounded-full shadow-inner drop-shadow-sm">
             <img
-              src={image}
+              src={localStorage.getItem("image")}
               alt="user image"
               className="w-20 h-20 rounded-full"
             />
           </div>
 
           <div className="flex flex-col justify-center gap-2 mt-2 items-center text-center">
-            <h1 className="text-xl font-semibold text-gray-900 mb-2">{name}</h1>
+            <h1 className="text-xl font-semibold text-gray-900 mb-2">
+              {localStorage.getItem("name")}
+            </h1>
             <p className="text-sm text-gray-500 text-center font-light">
-              {description}
+              {localStorage.getItem("description")}
             </p>
           </div>
 
@@ -98,6 +192,7 @@ const Profile = () => {
             ></textarea>
           </div>
           <button
+            type="submit"
             onClick={(e) => {
               updateProfile(e);
             }}
@@ -107,13 +202,14 @@ const Profile = () => {
               Save
             </span>
           </button>
-        </div>
+        </form>
         {/* Change password */}
-        <div className="flex flex-col gap-3 bg-white shadow-lg w-[500px] h-fit rounded-md px-10 py-10">
+        <form className="flex flex-col gap-3 bg-white shadow-lg w-[500px] h-fit rounded-md px-10 py-10">
           <label>Change Password</label>
           <div className="relative">
             <input
               type="password"
+              onChange={(e) => setOldPassword(e.target.value)}
               className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
             />
@@ -124,6 +220,7 @@ const Profile = () => {
           <div className="relative">
             <input
               type="password"
+              onChange={(e) => setNewPassword(e.target.value)}
               className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
             />
@@ -134,6 +231,7 @@ const Profile = () => {
           <div className="relative">
             <input
               type="password"
+              onChange={(e) => setConfirmNewPassword(e.target.value)}
               className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
             />
@@ -142,13 +240,16 @@ const Profile = () => {
             </label>
           </div>
           <Button
+            type="submit"
+            onClick={(e) => updatePassword(e)}
             variant="contained"
             className="text-white w-fit bg-blue-700/80"
           >
             Update
           </Button>
-        </div>
+        </form>
       </div>
+      <ToastContainer />
     </>
   );
 };

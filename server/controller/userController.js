@@ -105,6 +105,7 @@ exports.login = async (req, res) => {
       name: user.name,
       address: user.address,
       description: user.description,
+      image: user.image,
       role: user.role,
     });
   } catch (err) {
@@ -114,24 +115,33 @@ exports.login = async (req, res) => {
   }
 };
 
-// Update Profile Controller
-exports.updateProfile = async (req, res) => {
+// update user controller
+exports.updateUser = async (req, res) => {
   try {
-    const { id, name, address, description } = req.body;
+    const id = req.params.id;
+    const { name, address, description } = req.body;
     let image = req.file ? req.file.filename : undefined;
 
-    const user = await User.findByIdAndUpdate(
-      id,
-      {
-        name,
-        address,
-        description,
-        ...(image && { image: req.file.filename }),
-      },
-      {
-        new: true,
-      }
-    );
+    const imageUrl = "http://localhost:5051/";
+
+    const updatedFields = {};
+
+    if (name !== undefined) {
+      updatedFields.name = name;
+    }
+    if (address !== undefined) {
+      updatedFields.address = address;
+    }
+    if (description !== undefined) {
+      updatedFields.description = description;
+    }
+    if (image) {
+      updatedFields.image = imageUrl + image;
+    }
+
+    const user = await User.findByIdAndUpdate(id, updatedFields, {
+      new: true,
+    });
 
     res.status(200).json({
       status: 200,
@@ -186,38 +196,56 @@ exports.uploadProfile = [
   },
 ];
 
-// Update User Controller
-exports.updateUser = [
-  verifyToken,
-  async (req, res) => {
-    try {
-      const id = req.params.id;
-      const { name, address, description } = req.body;
-      console.log(req.file);
-      let image = req.file.filename;
-      console.log(image);
-      console.log(req.body);
-      const user = await User.findByIdAndUpdate(
-        id,
-        { name, address, description },
-        { new: true }
-      );
+// update password controller
+exports.updatePassword = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { oldPassword, newPassword, confirmNewPassword } = req.body;
 
-      if (!user) {
-        return res.status(404).send("User not found");
-      }
-
-      const imageUrl = "http://localhost:5051/";
-
-      res.status(200).json(user);
-    } catch (err) {
-      console.log(err.message),
-        res.status(500).json({
-          error: err.message,
-        });
+    if (!oldPassword || !newPassword || !confirmNewPassword) {
+      return res.status(400).json({
+        error:
+          "Please provide all required fields: old password, new password, and confirm new password.",
+      });
     }
-  },
-];
+
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({
+        error: "New password and confirm new password do not match.",
+      });
+    }
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        error: "Invalid old password.",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.status(200).json({
+      status: 200,
+      success: "Password updated successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
 
 // Delete User Controller
 exports.deleteUser = [

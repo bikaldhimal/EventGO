@@ -38,7 +38,7 @@ let filehandler = app.use(
 );
 //File Uploading Ends
 
-router.post("/add", filehandler, feedbackController.addFeedback);
-router.get("/all", feedbackController.getFeedback);
+router.post("/:id", filehandler, feedbackController.createFeedback);
+router.get("/", feedbackController.getFeedbacks);
 
 module.exports = router;
