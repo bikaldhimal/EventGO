@@ -180,7 +180,7 @@ exports.getInvitesSent = async (req, res) => {
 // get invites sent by an event organizer to an artist throught the artist's profile
 exports.getInviteByArtist = async (req, res) => {
   try {
-    const artistId = req.params.id;
+    const artistId = req.params.artistId;
     console.log("Artist ID:", artistId);
 
     const inviteRequests = await InviteRequest.find({

@@ -139,7 +139,7 @@ const ManagerRequests = () => {
                               className={`text-sm ${
                                 invite.status === "pending"
                                   ? "text-yellow-500"
-                                  : request.status === "accepted"
+                                  : invite.status === "accepted"
                                   ? "text-green-500"
                                   : "text-red-500"
                               }`}

@@ -31,7 +31,6 @@ import Overview from "./components/eventManager/overview";
 import Artist from "./components/eventManager/artist";
 import AdminNav from "./components/admin/adminNav";
 import AdminDashboard from "./components/admin/adminDashboard";
-import AdminProfile from "./components/admin/adminProfile";
 import AdminFeedback from "./components/admin/adminFeedback";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import GoogleRole from "./components/authentication/googleRole";
@@ -111,7 +110,6 @@ function App() {
           0{/* Admin Routes */}
           <Route path="/admin/" element={<AdminNav />}>
             <Route path="" element={<AdminDashboard />} />
-            <Route path="profile" element={<AdminProfile />} />
             <Route path="feedback" element={<AdminFeedback />} />
           </Route>
         </Route>
