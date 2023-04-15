@@ -1,18 +1,22 @@
 import React from "react";
 import axios from "./../../axios";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { RiLogoutCircleFill } from "react-icons/ri";
 import { FcInvite } from "react-icons/fc";
 import ManagerAppBar from "./managerAppBar";
 
 const ManagerNav = () => {
-  const handleLogout = async (e) => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const userId = localStorage.getItem("id");
+
     try {
-      await axios.get("/user/logout");
-      localStorage.clear();
-      console.clear();
+      await axios.put(`/user/logout/${userId}`);
+      localStorage.removeItem("id");
+      navigate("/login");
     } catch (error) {
-      console.log(error);
+      console.error("Error during logout:", error);
     }
   };
   return (

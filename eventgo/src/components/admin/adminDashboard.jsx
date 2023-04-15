@@ -86,6 +86,14 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleRefresh = () => {
+    if (flag === false) {
+      setFlag(true);
+    } else {
+      setFlag(false);
+    }
+  };
+
   return (
     <>
       <div className="container mx-auto min-h-screen overflow-hidden overflow-y-auto bg-slate-50 p-5 rounded-md">
@@ -146,7 +154,15 @@ const AdminDashboard = () => {
           <div className="flex-1 overflow-y-auto">
             <div className="container mx-auto py-8">
               <div className="my-6">
-                <h2 className="text-xl font-bold text-gray-700">Users</h2>
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-gray-700">Users</h2>
+                  <h2
+                    onClick={(e) => handleRefresh()}
+                    className="text-sm font-light text-gray-600 cursor-pointer"
+                  >
+                    Refresh
+                  </h2>
+                </div>
                 <table className="w-full bg-white shadow-md rounded my-6">
                   <thead className="border-b-2">
                     <tr>

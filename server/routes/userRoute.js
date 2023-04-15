@@ -48,7 +48,7 @@ router.put("/update-password/:id", filehandler, userController.updatePassword);
 router.post("/forgot-password", userController.forgotPassword);
 router.post("/check-otp", userController.checkOTP);
 router.post("/reset-password", userController.resetPassword);
-router.get("/logout", userController.logout);
+router.put("/logout/:id", userController.logout);
 router.get("/artists", userController.getArtists);
 router.get("/users", userController.getUsers);
 router.get("/managers", userController.getManagers);

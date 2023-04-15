@@ -265,22 +265,44 @@ exports.deleteUser = [
 ];
 
 // Logout Controller
+// exports.logout = async (req, res) => {
+//   try {
+//     const { token } = req.headers;
+//     const user = await User.findOne({
+//       token,
+//     });
+//     user.isActive = false;
+//     await user.save();
+//     res.clearCookie("token");
+//     res.status(200).json({
+//       message: "Logged out",
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       error: err.message,
+//     });
+//   }
+// };
+
 exports.logout = async (req, res) => {
   try {
-    const { token } = req.headers;
-    const user = await User.findOne({
-      token,
-    });
-    user.isActive = false;
-    await user.save();
-    res.clearCookie("token");
-    res.status(200).json({
-      message: "Logged out",
-    });
+    const userId = req.params.id; // Assuming the user's ID is passed as a URL parameter
+
+    // Update the isActive status to false for the given user
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { isActive: false },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User logged out successfully" });
   } catch (err) {
-    res.status(500).json({
-      error: err.message,
-    });
+    res.status(500).send(err);
+    error: err.message;
   }
 };
 

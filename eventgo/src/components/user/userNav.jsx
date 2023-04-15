@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import axios from "./../../axios";
 import { HiMenuAlt3, HiUserGroup } from "react-icons/hi";
 import { SiEventbrite } from "react-icons/si";
@@ -11,6 +11,7 @@ import { GoGitPullRequest } from "react-icons/go";
 import UserAppBar from "./userAppBar";
 
 const UserNav = () => {
+  const navigate = useNavigate();
   const menus = [
     { name: "events", link: "/user", icon: SiEventbrite },
     { name: "profile", link: "/user/profile", icon: FaUserAlt },
@@ -22,13 +23,15 @@ const UserNav = () => {
 
   const [open, setOpen] = React.useState(true);
 
-  const handleLogout = async (e) => {
+  const handleLogout = async () => {
+    const userId = localStorage.getItem("id");
+
     try {
-      await axios.get("/user/logout");
-      // localStorage.clear();
-      // console.clear();
+      await axios.put(`/user/logout/${userId}`);
+      localStorage.removeItem("id");
+      navigate("/login");
     } catch (error) {
-      console.log(error);
+      console.error("Error during logout:", error);
     }
   };
 
@@ -50,12 +53,16 @@ const UserNav = () => {
           <div className="mt-4 flex flex-col gap-4">
             {menus?.map((menu, i) => (
               <Link
-                to={menu?.link}
                 key={i}
-                onClick={menu?.name === "logout" ? handleLogout() : undefined}
                 className={` ${
                   menu?.margin && "mt-10 hover:bg-red-400/30"
                 } group flex items-center gap-3.5 text-sm font-medium p-2 hover:bg-gray-800 rounded-md`}
+                onClick={() => {
+                  if (menu?.name === "logout") {
+                    handleLogout();
+                  }
+                }}
+                to={menu?.link}
               >
                 <div>{React.createElement(menu?.icon, { size: "20" })}</div>
                 <h2

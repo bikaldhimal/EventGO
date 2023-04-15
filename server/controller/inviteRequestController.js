@@ -185,7 +185,6 @@ exports.getInvitesSent = async (req, res) => {
 exports.getInviteByArtist = async (req, res) => {
   try {
     const artistId = req.params.id;
-    console.log("Artist ID:", artistId);
 
     const inviteRequests = await InviteRequest.find({
       artistId: artistId,

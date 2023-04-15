@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-// import axios from "./../../axios";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import axios from "./../../axios";
 import { HiMenuAlt3, HiUserGroup } from "react-icons/hi";
 import { SiEventbrite } from "react-icons/si";
 import { FaUserAlt } from "react-icons/fa";
@@ -11,10 +11,10 @@ import { GoGitPullRequest } from "react-icons/go";
 import AppBar from "./appBar";
 
 const ActorNav = () => {
+  const navigate = useNavigate();
   const menus = [
     { name: "profile", link: "/actor/profile", icon: FaUserAlt },
     { name: "events", link: "/actor", icon: SiEventbrite },
-    // { name: "followers", link: "/actor/follower", icon: HiUserGroup },
     { name: "requests", link: "/actor/request", icon: GoGitPullRequest },
     { name: "messages", link: "/actor/message", icon: MdMessage },
     { name: "tickets", link: "/actor/ticket", icon: MdQrCodeScanner },
@@ -23,6 +23,18 @@ const ActorNav = () => {
   ];
 
   const [open, setOpen] = React.useState(true);
+
+  const handleLogout = async () => {
+    const userId = localStorage.getItem("id");
+
+    try {
+      await axios.put(`/user/logout/${userId}`);
+      localStorage.removeItem("id");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
 
   return (
     <>
@@ -42,12 +54,16 @@ const ActorNav = () => {
           <div className="mt-4 flex flex-col gap-4">
             {menus?.map((menu, i) => (
               <Link
-                to={menu?.link}
                 key={i}
-                // onClick={menu?.name === "logout" ? handleLogout() : undefined}
                 className={` ${
                   menu?.margin && "mt-10 hover:bg-red-400/30"
                 } group flex items-center gap-3.5 text-sm font-medium p-2 hover:bg-gray-800 rounded-md`}
+                onClick={() => {
+                  if (menu?.name === "logout") {
+                    handleLogout();
+                  }
+                }}
+                to={menu?.link}
               >
                 <div>{React.createElement(menu?.icon, { size: "20" })}</div>
                 <h2

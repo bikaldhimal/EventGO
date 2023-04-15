@@ -21,7 +21,6 @@ const Request = () => {
       .get(`/event/invite-artist/artist/${localStorage.getItem("id")}`)
       .then((response) => {
         setInvites(response?.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error.message);
@@ -48,7 +47,6 @@ const Request = () => {
         status: "accepted",
       })
       .then((response) => {
-        console.log("Response:", response);
         if (flag === true) {
           setFlag(false);
         } else {
@@ -66,7 +64,6 @@ const Request = () => {
         status: "rejected",
       })
       .then((response) => {
-        console.log("Response:", response);
         if (flag === true) {
           setFlag(false);
         } else {
