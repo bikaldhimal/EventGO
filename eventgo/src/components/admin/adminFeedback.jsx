@@ -4,16 +4,26 @@ import axios from "./../../axios";
 const AdminFeedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
 
-  useEffect(() => {
+  const fetchFeedbacks = () => {
     axios
       .get("/feedback")
       .then((response) => {
         setFeedbacks(response.data.feedbacks);
-        console.log(response.data.feedbacks);
       })
       .catch((error) => {
         console.error(error.message);
       });
+  };
+
+  useEffect(() => {
+    fetchFeedbacks();
+    const intervalId = setInterval(() => {
+      fetchFeedbacks();
+    }, 5000); // Poll every 5 seconds (5000 ms)
+
+    return () => {
+      clearInterval(intervalId); // Clear the interval on component unmount
+    };
   }, []);
 
   const dateOptions = {
@@ -42,10 +52,10 @@ const AdminFeedback = () => {
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-500 text-sm">
-                    {feedback.userId.name}
+                    {feedback.userId ? feedback.userId.name : "Unknown"}
                   </span>
                   <span className="text-gray-500 text-sm">
-                    {feedback.userId.role}
+                    {feedback.userId ? feedback.userId.role : "Unknown"}
                   </span>
                   <span className="text-gray-500 text-sm">
                     {new Date(feedback.createdAt).toLocaleDateString(

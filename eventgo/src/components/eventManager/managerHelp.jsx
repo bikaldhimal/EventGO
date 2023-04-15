@@ -1,9 +1,71 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdSend } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "./../../axios";
+import "react-toastify/dist/ReactToastify.css";
 
 const ManagerHelp = () => {
   const [showHide, setShowHide] = useState(false);
+  const [image, setImage] = useState(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const submitFeedback = (e) => {
+    e.preventDefault();
+    if (!title || !description || !image) {
+      handleEmptyFields();
+    }
+
+    const userId = localStorage.getItem("id");
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("image", image);
+    formData.append("role", localStorage.getItem("role"));
+
+    axios
+      .post(`/feedback/${userId}`, formData)
+      .then((response) => {
+        console.log(response.data);
+        handleSuccess();
+      })
+      .catch((err) => {
+        handleError();
+      });
+  };
+
+  const handleEmptyFields = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("The fields are empty!", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleSuccess = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.success("Feedback submitted successfully", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty",
+      });
+    }
+  };
+
+  const handleError = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Error in server", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
   return (
     <>
       <ol className="relative border-l border-gray-200 dark:border-gray-700">
@@ -41,29 +103,46 @@ const ManagerHelp = () => {
           </a>
           {/* feedback form */}
           {showHide && (
-            <form className="feedbackForm flex flex-col justify-start items-start mt-3 gap-3">
+            <form
+              type="submit"
+              // encType="multipart/form-data"
+              className="feedbackForm flex flex-col justify-start items-start mt-3 gap-3"
+            >
               <div className="flex flex-col lg:items-start items-center w-full px-2 gap-2 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
                 <button
                   type="submit"
                   className="inline-flex justify-center text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
                 >
-                  <label class="block">
-                    <span class="sr-only">Choose File</span>
+                  <label className="block">
+                    <span className="sr-only">Choose File</span>
                     <input
                       type="file"
-                      class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                      id="image"
+                      name="image"
+                      onChange={(e) => setImage(e.target.files[0])}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                     />
                   </label>
                 </button>
+                <input
+                  type="text"
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="bg-white text-gray-900 rounded-lg border  border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Title"
+                />
                 <textarea
                   id="chat"
                   rows="6"
                   className="block mx-4 lg:mx-0 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Enter your feedback here..."
+                  onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
               </div>
               <button
                 type="submit"
+                onClick={(e) => {
+                  submitFeedback(e);
+                }}
                 className="inline-flex justify-start items-center gap-2 py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 <MdSend />
@@ -132,6 +211,7 @@ const ManagerHelp = () => {
           </p>
         </li>
       </ol>
+      <ToastContainer />
     </>
   );
 };

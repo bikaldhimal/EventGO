@@ -20,27 +20,47 @@ const AdminDashboard = () => {
 
   // Get all the users
   useEffect(() => {
-    axios
-      .get("/admin/users", { email })
-      .then((response) => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("/admin/users", { email });
         setUsers(response.data);
         navigate("/admin");
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
+      }
+    };
+
+    fetchUsers();
+    const intervalId = setInterval(() => {
+      fetchUsers();
+    }, 10000); // Fetch users every 10 seconds
+
+    // Cleanup function
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [flag]);
 
   // Get all the payments
   useEffect(() => {
-    axios
-      .get("/admin/payments")
-      .then((response) => {
+    const fetchPayments = async () => {
+      try {
+        const response = await axios.get("/admin/payments");
         setPayments(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error.message);
-      });
+      }
+    };
+
+    fetchPayments();
+    const intervalId = setInterval(() => {
+      fetchPayments();
+    }, 10000); // Fetch payments every 10 seconds
+
+    // Cleanup function
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [flag]);
 
   const handleSuccess = () => {

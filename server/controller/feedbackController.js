@@ -29,12 +29,19 @@ exports.createFeedback = async (req, res, next) => {
 
 exports.getFeedbacks = async (req, res) => {
   try {
-    const feedbacks = await Feedback.find().populate("userId", "name role");
+    const feedbacks = await Feedback.find()
+      .populate({
+        path: "userId",
+        select: "name role",
+      })
+      .exec();
+
     if (feedbacks.length === 0) {
       return res.status(404).json({
         message: "No feedbacks found",
       });
     }
+
     res.status(200).json({
       message: "Feedbacks fetched successfully!",
       feedbacks,
