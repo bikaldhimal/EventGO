@@ -14,7 +14,6 @@ var UserSchema = new Schema(
     },
     address: {
       type: String,
-      // minlength: [5, "address must be at least 5 characters long"],
       default: "address: xxx - xx, xxxxx, xxxxx",
       required: false,
     },
@@ -31,7 +30,6 @@ var UserSchema = new Schema(
     },
     description: {
       type: String,
-      // minlength: 10,
       default: "Description about to be displayed, about yourself",
     },
     image: {

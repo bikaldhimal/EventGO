@@ -14,7 +14,6 @@ const UserNav = () => {
   const menus = [
     { name: "events", link: "/user", icon: SiEventbrite },
     { name: "profile", link: "/user/profile", icon: FaUserAlt },
-    { name: "requests", link: "/user/request", icon: GoGitPullRequest },
     { name: "messages", link: "/user/message", icon: MdMessage },
     { name: "tickets", link: "/user/ticket", icon: MdQrCodeScanner },
     { name: "help", link: "/user/help", icon: MdOutlineHelp },

@@ -197,6 +197,19 @@ const ActorHelp = () => {
         <li className="mb-10 ml-4">
           <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
           <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+            Requests
+          </time>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:underline hover:text-blue-700 hover:decoration-blue-700">
+            <Link to="/actor/request">View Requests</Link>
+          </h3>
+          <p className="text-base font-normal text-gray-500 dark:text-gray-400">
+            The Request section contains the list of the request sent and
+            received for event participation.
+          </p>
+        </li>
+        <li className="mb-10 ml-4">
+          <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+          <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
             Messages
           </time>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:underline hover:text-blue-700 hover:decoration-blue-700">

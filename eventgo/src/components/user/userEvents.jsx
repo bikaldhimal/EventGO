@@ -67,9 +67,6 @@ const UserEvents = () => {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button size="small" color="primary">
-                Request
-              </Button>
               <Button
                 size="small"
                 color="secondary"

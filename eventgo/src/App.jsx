@@ -38,7 +38,6 @@ import UserNav from "./components/user/userNav";
 import UserEvents from "./components/user/userEvents";
 import UserTicket from "./components/user/userTicket";
 import UserProfile from "./components/user/userProfile";
-import UserRequest from "./components/user/userRequest";
 import UserMessage from "./components/user/userMessage";
 import UserChat from "./components/user/userChat";
 import UserHelp from "./components/user/userHelp";
@@ -74,7 +73,6 @@ function App() {
               <Route path="event/ticket" element={<UserTicket />} />
             </Route>
             <Route path="profile" element={<UserProfile />} />
-            <Route path="request" element={<UserRequest />} />
             <Route path="message" element={<UserMessage />} />
             <Route path="chat" element={<UserChat />} />
             <Route path="ticket" element={<UserQR />} />

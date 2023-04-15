@@ -21,12 +21,6 @@ const Message = () => {
       });
   }, []);
 
-  // const handleButtonClick = (managerId) => {
-  //   setReceiver(managerId);
-  //   getMessage();
-  //   navigate("/actor/chat");
-  // };
-
   const handleButtonClick = (managerId) => {
     setReceiver(managerId);
     getMessage();
@@ -42,7 +36,6 @@ const Message = () => {
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-9">
-        {/* People you may know */}
         <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
           <div className="flex items-center justify-between mb-4">
             <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
@@ -80,13 +73,6 @@ const Message = () => {
                         </p>
                       </div>
                       <button
-                        // onClick={() => {
-                        //   setReceiver(manager._id);
-                        //   getMessage();
-                        //   if (receiver) {
-                        //     navigate("/actor/chat");
-                        //   }
-                        // }}
                         onClick={() => handleButtonClick(manager._id)}
                         className="inline-flex items-center text-base font-semibold text-gray-900 hover:text-blue-700 dark:text-white cursor-pointer"
                       >
@@ -100,7 +86,6 @@ const Message = () => {
             </ul>
           </div>
         </div>
-        {/* People you may know end */}
       </div>
     </>
   );
