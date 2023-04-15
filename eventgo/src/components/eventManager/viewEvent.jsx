@@ -8,11 +8,13 @@ const ViewEvent = () => {
   const [events, setEvents] = useState([]);
   const [flag, setFlag] = useState(false);
 
+  // get all events
   useEffect(() => {
     axios
       .get(`/event/${userId}`)
       .then((response) => {
         setEvents(response.data);
+        localStorage.setItem("eventCount", response.data.length);
       })
       .catch((error) => {
         console.log(error);

@@ -88,19 +88,6 @@ const ManagerNav = () => {
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                 >
                   <FcInvite className="w-6 h-6 ransition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
-                  {/* <svg
-                    aria-hidden="true"
-                    className="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg> */}
                   <span className="ml-3">Invites</span>
                 </Link>
               </li>
@@ -121,9 +108,6 @@ const ManagerNav = () => {
                   </svg>
                   <span className="flex-1 ml-3 whitespace-nowrap">
                     Messages
-                  </span>
-                  <span className="inline-flex justify-center items-center w-5 h-5 text-xs font-semibold rounded-full text-primary-800 bg-primary-100 dark:bg-primary-200 dark:text-primary-800">
-                    6
                   </span>
                 </Link>
               </li>
@@ -170,21 +154,7 @@ const ManagerNav = () => {
               </li>
             </ul>
           </div>
-          <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
-            <a
-              href="#"
-              className="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
-            >
-              <svg
-                aria-hidden="true"
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z"></path>
-              </svg>
-            </a>
+          <div className="hidden absolute bottom-0 left-0 justify-start p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
             <Link
               to="/manager/profile"
               data-tooltip-target="tooltip-settings"

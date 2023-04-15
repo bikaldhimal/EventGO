@@ -108,8 +108,8 @@ const Artist = () => {
               <div className="h-2/4 sm:h-64 overflow-hidden">
                 <img
                   className="w-full rounded-t"
-                  src={artists.image}
-                  alt={artists.name}
+                  src={artist.image}
+                  alt={artist.name}
                 />
               </div>
               <div className="flex justify-start px-5 -mt-12 mb-5">

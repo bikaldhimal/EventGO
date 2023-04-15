@@ -155,19 +155,23 @@ exports.inviteArtists = async (req, res) => {
   }
 };
 
-// get invites sent by an event organizer to an artist
+// get invites sent by an event organizer to an artist through the event organizer's profile
 exports.getInvitesSent = async (req, res) => {
   try {
     const managerId = req.params.id;
     const inviteRequests = await InviteRequest.find({
       managerId: managerId,
       type: "invite",
-    }).populate({ path: "eventId", select: "title" });
+    }).populate([
+      { path: "eventId", select: "title" },
+      { path: "artistId", select: "name" },
+    ]);
 
-    // Mapping the inviteRequests to a new array containing the previous data along with the event title
+    // Mapping the inviteRequests to a new array containing the previous data along with the event title and artist name
     const responseData = inviteRequests.map((inviteRequest) => ({
       ...inviteRequest.toObject(),
       eventTitle: inviteRequest.eventId.title,
+      artistName: inviteRequest.artistId.name,
     }));
 
     res.status(200).json(responseData);
@@ -180,29 +184,38 @@ exports.getInvitesSent = async (req, res) => {
 // get invites sent by an event organizer to an artist throught the artist's profile
 exports.getInviteByArtist = async (req, res) => {
   try {
-    const artistId = req.params.artistId;
+    const artistId = req.params.id;
     console.log("Artist ID:", artistId);
 
     const inviteRequests = await InviteRequest.find({
-      artistId: "641ae76034fb75623f67c292",
+      artistId: artistId,
       type: "invite",
-    }).populate({ path: "eventId", select: "title venue" });
+    }).populate([
+      { path: "eventId", select: "title venue" },
+      { path: "managerId", select: "name" },
+    ]);
 
-    console.log("Invite requests:", inviteRequests);
+    if (inviteRequests.length === 0) {
+      console.log("No invites found for this artist");
+    }
 
-    // Mapping the inviteRequests to a new array containing the previous data along with the event title
-    const responseData = inviteRequests.map((inviteRequest) => ({
-      ...inviteRequest.toObject(),
-      eventTitle: inviteRequest.eventId.title,
-      venue: inviteRequest.eventId.venue,
-    }));
-
-    console.log("Response data:", responseData);
+    // Building the responseData array
+    let responseData = [];
+    inviteRequests.forEach((inviteRequest) => {
+      if (inviteRequest.eventId) {
+        responseData.push({
+          ...inviteRequest.toObject(),
+          eventTitle: inviteRequest.eventId.title,
+          venue: inviteRequest.eventId.venue,
+          managerName: inviteRequest.managerId.name,
+        });
+      }
+    });
 
     res.status(200).json(responseData);
   } catch (err) {
+    console.error("Error:", err.message);
     res.status(500).send(err);
-    error: err.message;
   }
 };
 

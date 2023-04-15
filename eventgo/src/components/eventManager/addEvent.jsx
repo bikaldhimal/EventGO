@@ -88,6 +88,9 @@ const AddEvent = () => {
             setSuccess("Event created successfully");
             navigate("/manager/event/view");
             handleSuccess();
+            // update event count
+            const eventCount = localStorage.getItem("eventCount");
+            localStorage.setItem("eventCount", parseInt(eventCount) + 1);
           } else setError(response.data.message);
         })
         .catch((error) => {

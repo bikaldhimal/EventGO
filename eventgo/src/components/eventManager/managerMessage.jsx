@@ -35,12 +35,6 @@ const ManagerMessage = () => {
       });
   }, []);
 
-  // const handleActor = (actorId) => {
-  //   setReceiver(actorId);
-  //   getMessage();
-  //   navigate("/manager/chat");
-  // };
-
   const handleActor = (actorId) => {
     setReceiver(actorId);
     getMessage();
@@ -97,7 +91,7 @@ const ManagerMessage = () => {
                         <div className="flex-shrink-0">
                           <img
                             className="w-8 h-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1676481945425-621e73a056ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=986&q=80"
+                            src={artist.image}
                             alt="Neil image"
                           />
                         </div>
@@ -143,7 +137,7 @@ const ManagerMessage = () => {
                         <div className="flex-shrink-0">
                           <img
                             className="w-8 h-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1676481945425-621e73a056ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=986&q=80"
+                            src={user.image}
                             alt="Neil image"
                           />
                         </div>

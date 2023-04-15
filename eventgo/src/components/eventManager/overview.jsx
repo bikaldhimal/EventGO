@@ -15,7 +15,9 @@ const Overview = () => {
               <p className="text-sm font-light text-end tracking-wide">
                 Total Events
               </p>
-              <p className="text-xl font-medium text-end tracking-wide">2500</p>
+              <p className="text-xl font-medium text-end tracking-wide">
+                {localStorage.getItem("eventCount")}
+              </p>
             </div>
             <hr className="mt-5" />
             <div className="flex justify-start items-center py-2 pl-1">
@@ -34,7 +36,7 @@ const Overview = () => {
                 Total Sales
               </p>
               <p className="text-xl font-medium text-end tracking-wide">
-                $10900
+                NPR {localStorage.getItem("totalSales")}
               </p>
             </div>
             <hr className="mt-5" />

@@ -1,9 +1,71 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdSend } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "./../../axios";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserHelp = () => {
   const [showHide, setShowHide] = useState(false);
+  const [image, setImage] = useState(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const submitFeedback = (e) => {
+    e.preventDefault();
+    if (!title || !description || !image) {
+      handleEmptyFields();
+    }
+
+    const userId = localStorage.getItem("id");
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("image", image);
+    formData.append("role", localStorage.getItem("role"));
+
+    axios
+      .post(`/feedback/${userId}`, formData)
+      .then((response) => {
+        console.log(response.data);
+        handleSuccess();
+      })
+      .catch((err) => {
+        handleError();
+      });
+  };
+
+  const handleEmptyFields = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("The fields are empty!", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
+  const handleSuccess = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.success("Feedback submitted successfully", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty",
+      });
+    }
+  };
+
+  const handleError = () => {
+    if (!toast.isActive("empty-fields")) {
+      toast.error("Error in server", {
+        position: "top-right",
+        autoClose: 2000,
+        toastId: "empty-fields",
+      });
+    }
+  };
+
   return (
     <>
       <ol className="relative border-l border-gray-200 dark:border-gray-700">
@@ -41,7 +103,11 @@ const UserHelp = () => {
           </a>
           {/* feedback form */}
           {showHide && (
-            <form className="feedbackForm flex flex-col justify-start items-start mt-3 gap-3">
+            <form
+              type="submit"
+              // encType="multipart/form-data"
+              className="feedbackForm flex flex-col justify-start items-start mt-3 gap-3"
+            >
               <div className="flex flex-col lg:items-start items-center w-full px-2 gap-2 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
                 <button
                   type="submit"
@@ -51,19 +117,32 @@ const UserHelp = () => {
                     <span className="sr-only">Choose File</span>
                     <input
                       type="file"
+                      id="image"
+                      name="image"
+                      onChange={(e) => setImage(e.target.files[0])}
                       className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                     />
                   </label>
                 </button>
+                <input
+                  type="text"
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="bg-white text-gray-900 rounded-lg border  border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Title"
+                />
                 <textarea
                   id="chat"
                   rows="6"
                   className="block mx-4 lg:mx-0 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Enter your feedback here..."
+                  onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
               </div>
               <button
                 type="submit"
+                onClick={(e) => {
+                  submitFeedback(e);
+                }}
                 className="inline-flex justify-start items-center gap-2 py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 <MdSend />
@@ -79,7 +158,7 @@ const UserHelp = () => {
             Events
           </time>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:underline hover:text-blue-700 hover:decoration-blue-700">
-            <Link to="/user">View and analyze all the events Manager</Link>
+            <Link to="/user">View and analyze all the events</Link>
           </h3>
           <p className="text-base font-normal text-gray-500 dark:text-gray-400">
             The event section contains all the events posted by event organizer
@@ -87,6 +166,7 @@ const UserHelp = () => {
             participation, and buy tickets as well.
           </p>
         </li>
+
         <li className="mb-10 ml-4">
           <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
           <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
@@ -101,20 +181,7 @@ const UserHelp = () => {
             password for login.
           </p>
         </li>
-        <li className="mb-10 ml-4">
-          <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-          <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-            Requests
-          </time>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:underline hover:text-blue-700 hover:decoration-blue-700">
-            <Link to="/user/request">View available artist</Link>
-          </h3>
-          <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-            The follower section contains the list of artists and organizers you
-            can follow, followers, and people you may know as well through which
-            you can start making connection.
-          </p>
-        </li>
+
         <li className="mb-10 ml-4">
           <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
           <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
@@ -128,6 +195,7 @@ const UserHelp = () => {
             with the event manager and artist and see all the available users.
           </p>
         </li>
+
         <li className="mb-10 ml-4">
           <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
           <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
@@ -142,6 +210,7 @@ const UserHelp = () => {
           </p>
         </li>
       </ol>
+      <ToastContainer />
     </>
   );
 };

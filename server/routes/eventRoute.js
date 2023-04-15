@@ -52,7 +52,7 @@ router.get("/request/manager/:managerId", inviteRequest.getRequestsByManager);
 
 router.post("/invite-artist", inviteRequest.inviteArtists); // Invite artist to event by the manager
 router.get("/invite-artist/manager/:id", inviteRequest.getInvitesSent); // Get invites sent by the manager
-router.get("/invite-artist/artist/:artistId", inviteRequest.getInviteByArtist); // Get invites sent to the artist
+router.get("/invite-artist/artist/:id", inviteRequest.getInviteByArtist); // Get invites sent to the artist
 
 // Update request and Invite
 router.post("/update-request/:id", inviteRequest.updateRequest);

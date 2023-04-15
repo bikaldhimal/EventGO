@@ -10,11 +10,13 @@ const Message = () => {
   const receiver = storeActor((state) => state.receiver);
   const getMessage = storeActor((state) => state.getMessage);
 
+  // Get all the managers
   useEffect(() => {
     axios
       .get("/user/managers")
       .then((response) => {
         setManagers(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error.message);
@@ -60,7 +62,7 @@ const Message = () => {
                       <div className="flex-shrink-0">
                         <img
                           className="w-8 h-8 rounded-full"
-                          src="https://images.unsplash.com/photo-1524638431109-93d95c968f03?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+                          src={manager.image}
                           alt="Neil image"
                         />
                       </div>

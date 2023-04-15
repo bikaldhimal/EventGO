@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import axios from "./../../axios";
-import { GrRefresh } from "react-icons/gr";
 
 const ManagerRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -24,7 +23,11 @@ const ManagerRequests = () => {
         status: "accepted",
       })
       .then((response) => {
-        console.log("Response:", response);
+        if (flag === true) {
+          setFlag(false);
+        } else {
+          setFlag(true);
+        }
       })
       .catch((error) => {
         console.log(error.message);
@@ -37,7 +40,11 @@ const ManagerRequests = () => {
         status: "rejected",
       })
       .then((response) => {
-        console.log("Response:", response);
+        if (flag === true) {
+          setFlag(false);
+        } else {
+          setFlag(true);
+        }
       })
       .catch((error) => {
         console.log(error.message);
@@ -50,7 +57,6 @@ const ManagerRequests = () => {
       .get(`/event/request/manager/${localStorage.getItem("id")}`)
       .then((response) => {
         setRequests(response?.data);
-        console.log("Response:", response);
       })
       .catch((error) => {
         console.log(error.message);
@@ -63,20 +69,17 @@ const ManagerRequests = () => {
       .get(`/event/invite-artist/manager/${localStorage.getItem("id")}`)
       .then((response) => {
         setInvites(response?.data);
-        console.log("Response:", response);
       })
       .catch((error) => {
         console.log(error.message);
       });
-  }, []);
+  }, [flag]);
 
   const handleRefresh = () => {
-    if (flag) {
-      if (flag === true) {
-        setFlag(false);
-      } else {
-        setFlag(true);
-      }
+    if (flag === true) {
+      setFlag(false);
+    } else {
+      setFlag(true);
     }
   };
 
@@ -97,6 +100,12 @@ const ManagerRequests = () => {
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         Event Title
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Invited To
                       </th>
                       <th
                         scope="col"
@@ -123,6 +132,11 @@ const ManagerRequests = () => {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-medium text-gray-900">
                               {invite.eventTitle}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900">
+                              {invite.artistName}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -183,7 +197,6 @@ const ManagerRequests = () => {
                   onClick={() => handleRefresh()}
                   className="flex gap-1 text-sm items-center hover: cursor-pointer hover:text-gray-500"
                 >
-                  {/* <GrRefresh /> */}
                   <p>Refresh</p>
                 </div>
               </div>
