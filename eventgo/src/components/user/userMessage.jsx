@@ -24,7 +24,7 @@ const UserMessage = () => {
   const handleButtonClick = (managerId) => {
     setReceiver(managerId);
     getMessage();
-    navigate("/actor/chat");
+    navigate("/user/chat");
     // Update the localStorage with the current user's name and the manager's name
     const currentUser = localStorage.getItem("name"); // Replace with the current user's name
     const managerName = managers.find(

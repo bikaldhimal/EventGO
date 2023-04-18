@@ -72,7 +72,23 @@ const Login = () => {
           if (response.data.role === "admin") return navigate("/admin");
         } else {
           setIsActive(false);
-          handleInvalidCredentials();
+          if (response.data.suspended === true) {
+            // Show popup message for suspended users
+            toast.warn(
+              "Your account has been suspended. Please contact the customer support (EventGO).",
+              {
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+                toastId: "suspended-account",
+              }
+            );
+          } else {
+            // Show toast message for invalid credentials
+            handleInvalidCredentials();
+          }
         }
       }
     } catch (error) {
@@ -81,7 +97,6 @@ const Login = () => {
       handleError();
     }
   };
-  
 
   return (
     <section className="flex justify-center items-center bg-[#ECEFF3] w-full min-h-screen font-montserrat">

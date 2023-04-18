@@ -106,6 +106,24 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleSuspend = (user) => {
+    const updatedUser = { ...user, suspended: !user.suspended };
+    axios
+      .put(`/admin/users/${user._id}`, updatedUser)
+      .then((response) => {
+        if (flag === false) {
+          setFlag(true);
+        } else {
+          setFlag(false);
+        }
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        handleError();
+      });
+  };
+
   const handleRefresh = () => {
     if (flag === false) {
       setFlag(true);
@@ -240,9 +258,21 @@ const AdminDashboard = () => {
                         <td className="px-6 py-4 whitespace-no-wrap border-b">
                           <div className="flex items-center">
                             <div className="mr-4 xl:space-x-2 space-y-2">
-                              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Suspend
+                              <button
+                                onClick={() => {
+                                  handleSuspend(user);
+                                }}
+                                className={`${
+                                  user.suspended
+                                    ? "bg-green-500"
+                                    : "bg-blue-500"
+                                } hover:bg-${
+                                  user.suspended ? "red-700" : "blue-700"
+                                } text-white font-bold py-2 px-4 rounded`}
+                              >
+                                {user.suspended ? "Unsuspend" : "Suspend"}
                               </button>
+
                               <button
                                 onClick={() => {
                                   handleDelete(user._id, user.name);

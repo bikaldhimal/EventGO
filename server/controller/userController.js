@@ -264,26 +264,6 @@ exports.deleteUser = [
   },
 ];
 
-// Logout Controller
-// exports.logout = async (req, res) => {
-//   try {
-//     const { token } = req.headers;
-//     const user = await User.findOne({
-//       token,
-//     });
-//     user.isActive = false;
-//     await user.save();
-//     res.clearCookie("token");
-//     res.status(200).json({
-//       message: "Logged out",
-//     });
-//   } catch (err) {
-//     res.status(500).json({
-//       error: err.message,
-//     });
-//   }
-// };
-
 exports.logout = async (req, res) => {
   try {
     const userId = req.params.id; // Assuming the user's ID is passed as a URL parameter

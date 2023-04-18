@@ -12,5 +12,6 @@ router.post("/login", adminController.login);
 router.get("/users", adminController.getUser);
 router.delete("/users/:id", adminController.deleteUser);
 router.get("/payments", adminController.getAllPayments);
+router.put("/suspend/:userId", adminController.suspendUser);
 
 module.exports = router;
